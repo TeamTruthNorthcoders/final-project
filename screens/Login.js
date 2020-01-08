@@ -2,6 +2,7 @@ import React from "react";
 import {
   View,
   TextInput,
+  Image,
   StyleSheet,
   TouchableOpacity,
   Text,
@@ -28,6 +29,14 @@ class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../assets/manchesterBee.jpg")}
+            style={styles.imageBee}
+          />
+          <Text style= {styles.safe}>Safe</Text>
+        </View>
+
         <View style={styles.row}>
           <Icon name="envelope" type="font-awesome" />
           <TextInput
@@ -54,10 +63,10 @@ class Login extends React.Component {
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Button
-          title="Don't have an account yet? Sign up"
+        <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Signup")}
-        />
+          ><Text style={styles.signup}>Don't have an account yet? Sign up</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -69,6 +78,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center', 
+    alignItems : 'center',
+    width: "80%",
+    height: "25%",
+    resizeMode: "contain",
+    marginBottom: 0,
+  },
+  imageBee: {
+    flexDirection: 'row',
+    justifyContent: 'center', 
+    alignItems : 'center',
+    width: "40%",
+    height: "75%",
+    resizeMode: "contain"
+  },
+  safe: {
+    fontSize: 60,
+    color: "#e6005c",
+    fontFamily: 'Helvetica Neue',
+
   },
   row: {
     display: "flex",
@@ -84,12 +116,11 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 15,
     fontSize: 16,
-
     textAlign: "left"
   },
   button: {
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 15,
     paddingVertical: 5,
     alignItems: "center",
     backgroundColor: "#e6005c",
@@ -104,7 +135,12 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   buttonSignup: {
-    fontSize: 12
+    fontSize: 12,
+    
+  },
+  signup: {
+    color: 'black',
+    fontSize: 18,
   }
 });
 
