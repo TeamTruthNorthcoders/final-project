@@ -7,16 +7,13 @@ import {
   Text,
   Button
 } from "react-native";
+import { Icon } from "react-native-elements";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateEmail, updatePassword, login, getUser } from "../actions/user";
 import Firebase from "../config/Firebase";
 
 class Login extends React.Component {
-  // handleLogin = () => {
-  //   this.props.login();
-  //   this.props.navigation.navigate("Profile");
-  // };
   componentDidMount = () => {
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -31,20 +28,26 @@ class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          value={this.props.user.email}
-          onChangeText={email => this.props.updateEmail(email)}
-          placeholder="Email"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputBox}
-          value={this.props.user.password}
-          onChangeText={password => this.props.updatePassword(password)}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
+        <View style={styles.row}>
+          <Icon name="envelope" type="font-awesome" />
+          <TextInput
+            style={styles.inputBox}
+            value={this.props.user.email}
+            onChangeText={email => this.props.updateEmail(email)}
+            placeholder="Email"
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={styles.row}>
+          <Icon name="lock" type="font-awesome" />
+          <TextInput
+            style={styles.inputBox}
+            value={this.props.user.password}
+            onChangeText={password => this.props.updatePassword(password)}
+            placeholder="Password"
+            secureTextEntry={true}
+          />
+        </View>
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.props.login()}
@@ -67,25 +70,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  inputBox: {
-    width: "85%",
-    margin: 10,
-    padding: 15,
-    fontSize: 16,
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     borderColor: "#d3d3d3",
     borderBottomWidth: 1,
-    textAlign: "center"
+    width: "80%"
+  },
+
+  inputBox: {
+    width: "80%",
+    margin: 5,
+    padding: 15,
+    fontSize: 16,
+
+    textAlign: "left"
   },
   button: {
     marginTop: 30,
-    marginBottom: 20,
+    marginBottom: 10,
     paddingVertical: 5,
     alignItems: "center",
-    backgroundColor: "#F6820D",
-    borderColor: "#F6820D",
+    backgroundColor: "#e6005c",
+    borderColor: "#cc0052",
     borderWidth: 1,
-    borderRadius: 5,
-    width: 200
+    borderRadius: 20,
+    width: "80%"
   },
   buttonText: {
     fontSize: 20,

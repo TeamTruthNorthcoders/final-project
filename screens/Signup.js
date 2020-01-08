@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text
 } from "react-native";
-
+import { Icon } from "react-native-elements";
 import Firebase from "../config/Firebase";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -18,14 +18,15 @@ class Signup extends React.Component {
     email: "",
     password: ""
   };
-  handleSignUp = () => {
-    this.props.signup();
-    this.props.navigation.navigate("Profile");
-  };
+  // handleSignUp = () => {
+  //   this.props.signup();
+  //   this.props.navigation.navigate("Profile");
+  // };
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
+        <View style={styles.row}>
+          <Icon name="envelope" type="font-awesome" />
           <TextInput
             style={styles.inputBox}
             value={this.props.user.email}
@@ -33,6 +34,9 @@ class Signup extends React.Component {
             placeholder="Email"
             autoCapitalize="none"
           />
+        </View>
+        <View style={styles.row}>
+          <Icon name="lock" type="font-awesome" />
           <TextInput
             style={styles.inputBox}
             value={this.props.user.password}
@@ -40,10 +44,10 @@ class Signup extends React.Component {
             placeholder="Password"
             secureTextEntry={true}
           />
-          <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-            <Text style={styles.buttonText}>Signup</Text>
-          </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.button} onPress={this.props.signup}>
+          <Text style={styles.buttonText}>Signup</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -56,25 +60,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  inputBox: {
-    width: "85%",
-    margin: 10,
-    padding: 15,
-    fontSize: 16,
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     borderColor: "#d3d3d3",
     borderBottomWidth: 1,
-    textAlign: "center"
+    width: "80%"
+  },
+  inputBox: {
+    width: "80%",
+    margin: 5,
+    padding: 15,
+    fontSize: 16,
+    textAlign: "left"
   },
   button: {
     marginTop: 30,
-    marginBottom: 20,
+    marginBottom: 10,
     paddingVertical: 5,
     alignItems: "center",
-    backgroundColor: "#FFA611",
-    borderColor: "#FFA611",
+    backgroundColor: "#e6005c",
+    borderColor: "#cc0052",
     borderWidth: 1,
-    borderRadius: 5,
-    width: 200
+    borderRadius: 20,
+    width: "80%"
   },
   buttonText: {
     fontSize: 20,
