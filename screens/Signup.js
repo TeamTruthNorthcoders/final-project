@@ -4,7 +4,8 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Text
+  Text,
+  Image
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Firebase from "../config/Firebase";
@@ -18,13 +19,16 @@ class Signup extends React.Component {
     email: "",
     password: ""
   };
-  // handleSignUp = () => {
-  //   this.props.signup();
-  //   this.props.navigation.navigate("Profile");
-  // };
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("../assets/manchesterBee.jpg")}
+            style={styles.imageBee}
+          />
+          <Text style={styles.safe}>Safe</Text>
+        </View>
         <View style={styles.row}>
           <Icon name="envelope" type="font-awesome" />
           <TextInput
@@ -59,6 +63,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center', 
+    alignItems : 'center',
+    width: "80%",
+    height: "25%",
+    resizeMode: "contain",
+    marginBottom: 0,
+  },
+  imageBee: {
+    flexDirection: 'row',
+    justifyContent: 'center', 
+    alignItems : 'center',
+    width: "40%",
+    height: "70%",
+    resizeMode: "contain"
+  },
+  safe: {
+    fontSize: 60,
+    color: "#e6005c",
+    fontFamily: 'Helvetica Neue',
+
   },
   row: {
     display: "flex",
