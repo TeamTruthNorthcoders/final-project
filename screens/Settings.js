@@ -1,15 +1,20 @@
 import React from "react";
-import { View, Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet, Button} from "react-native";
 import { connect } from "react-redux";
+import Firebase from "../config/Firebase";
 
 
 class Settings extends React.Component {
- 
+  handleSignout = () => {
+    Firebase.auth().signOut();
+    this.props.navigation.navigate("Login");
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Settings Screen</Text>
+        <Button title="Logout" onPress={this.handleSignout} />
       </View>
     );
   }
