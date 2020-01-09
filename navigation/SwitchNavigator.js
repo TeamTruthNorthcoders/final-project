@@ -1,8 +1,10 @@
 import React from "react";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
+
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
-import Profile from "../screens/Profile";
+import MainPage from "../screens/MainPage";
+import TabNav from "./TabNavigator";
 
 const SwitchNavigator = createSwitchNavigator(
   {
@@ -12,8 +14,8 @@ const SwitchNavigator = createSwitchNavigator(
     Signup: {
       screen: Signup
     },
-    Profile: {
-      screen: Profile
+    Home: {
+      screen: TabNav
     }
   },
   {
@@ -21,4 +23,6 @@ const SwitchNavigator = createSwitchNavigator(
   }
 );
 
-export default createAppContainer(SwitchNavigator);
+
+ export default 
+  createAppContainer(SwitchNavigator);

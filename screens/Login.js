@@ -5,8 +5,7 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Text,
-  Button
+  Text
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { bindActionCreators } from "redux";
@@ -20,7 +19,7 @@ class Login extends React.Component {
       if (user) {
         this.props.getUser(user.uid);
         if (this.props.user != null) {
-          this.props.navigation.navigate("Profile");
+          this.props.navigation.navigate("Home");
         }
       }
     });
@@ -34,7 +33,7 @@ class Login extends React.Component {
             source={require("../assets/manchesterBee.jpg")}
             style={styles.imageBee}
           />
-          <Text style= {styles.safe}>Safe</Text>
+          <Text style={styles.safe}>Safe</Text>
         </View>
 
         <View style={styles.row}>
@@ -65,7 +64,8 @@ class Login extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate("Signup")}
-          ><Text style={styles.signup}>Don't have an account yet? Sign up</Text>
+        >
+          <Text style={styles.signup}>Don't have an account yet? Sign up</Text>
         </TouchableOpacity>
       </View>
     );
@@ -80,18 +80,18 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center', 
-    alignItems : 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     width: "80%",
     height: "25%",
     resizeMode: "contain",
-    marginBottom: 0,
+    marginBottom: 0
   },
   imageBee: {
-    flexDirection: 'row',
-    justifyContent: 'center', 
-    alignItems : 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     width: "40%",
     height: "75%",
     resizeMode: "contain"
@@ -99,8 +99,7 @@ const styles = StyleSheet.create({
   safe: {
     fontSize: 60,
     color: "#e6005c",
-    fontFamily: 'Helvetica Neue',
-
+    fontFamily: "Roboto"
   },
   row: {
     display: "flex",
@@ -135,12 +134,11 @@ const styles = StyleSheet.create({
     color: "#fff"
   },
   buttonSignup: {
-    fontSize: 12,
-    
+    fontSize: 12
   },
   signup: {
-    color: 'black',
-    fontSize: 18,
+    color: "black",
+    fontSize: 18
   }
 });
 
