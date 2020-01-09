@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   safe: {
     fontSize: 60,
     color: "#e6005c",
-    fontFamily: 'Helvetica Neue',
+    fontFamily: 'Roboto',
 
   },
   row: {
