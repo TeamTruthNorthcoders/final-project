@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   safe: {
     fontSize: 60,
     color: "#e6005c",
-    fontFamily: "Roboto"
+    fontFamily: "Helvetica Neue"
   },
   row: {
     display: "flex",

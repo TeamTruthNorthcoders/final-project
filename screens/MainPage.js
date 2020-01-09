@@ -1,19 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { connect } from "react-redux";
-import Firebase from "../config/Firebase";
+
+import Map from "../Maps/Map"
 
 class MainPage extends React.Component {
-  handleSignout = () => {
-    Firebase.auth().signOut();
-    this.props.navigation.navigate("Login");
-  };
+  
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>MainPage Screen</Text>
-        <Button title="Logout" onPress={this.handleSignout} />
+        <Map/>
+        
       </View>
     );
   }
