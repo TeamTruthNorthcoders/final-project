@@ -33,7 +33,8 @@ class Settings extends React.Component {
     user
       .updatePassword(this.state.newPassword)
       .then(() => {
-        Alert.alert("Password was changed");
+        Alert.alert("Password was succesfully changed!");
+        //potentially navigate back to maps?
       })
       .catch(error => {
         Alert.alert(error.message);
@@ -55,22 +56,31 @@ class Settings extends React.Component {
               _value={this.state.switch}
               _onValueChange={() => {
                 this.setState({ switch: !this.state.switch });
-                this.onChangePasswordPress;
+                this.onChangePasswordPress();
               }}
-              onPressCallback={this.onChangePasswordPress}
             />
             <TextInput
-              style
-              placeholder="new Password"
+              style={styles.texInput}
+              placeholder="Current Password"
               autoCapitalize="none"
               secureTextEntry={true}
+              blurOnSubmit
               onChangeText={text => {
-                this.setState(this.setState({ newPassword: text }));
-                console.log(this.state);
+                this.setState({ newPassword: text });
+              }}
+            ></TextInput>
+            <TextInput
+              style={styles.texInput}
+              placeholder="Type in your new password here"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              blurOnSubmit
+              onChangeText={text => {
+                this.setState({ newPassword: text });
               }}
             ></TextInput>
             <CheckRow
-              text="Check Row"
+              text="Change email"
               iconName="pagelines"
               _color="#000"
               _value={this.state.check}
@@ -78,6 +88,16 @@ class Settings extends React.Component {
                 this.setState({ check: !this.state.check });
               }}
             />
+            <TextInput
+              style={styles.texInput}
+              placeholder="Type in your email here"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              blurOnSubmit
+              onChangeText={text => {
+                this.setState({ newPassword: text });
+              }}
+            ></TextInput>
             <SliderRow
               text="Slider Row"
               iconName="database"
@@ -91,10 +111,6 @@ class Settings extends React.Component {
             />
           </SectionRow>
         </ReactNativeSettingsPage>
-        {/* <View style={styles.container}>
-          <Text>Settings Screen</Text>
-          <Button title="Logout" onPress={this.handleSignout} />
-        </View> */}
       </React.Fragment>
     );
   }
@@ -106,6 +122,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center"
+  },
+  texInput: {
+    borderColor: "gray",
+    borderWidth: 1,
+    margin: 15,
+    height: 40
   }
 });
 
