@@ -9,6 +9,8 @@ import ReactNativeSettingsPage, {
   SliderRow,
   SwitchRow
 } from "react-native-settings-page";
+import { TextInput } from "react-native-gesture-handler";
+import { Alert } from "react-native";
 
 class Settings extends React.Component {
   handleSignout = () => {
@@ -18,31 +20,55 @@ class Settings extends React.Component {
   state = {
     check: false,
     switch: false,
-    value: 40
+    value: 40,
+    newPassword: ""
   };
   _navigateToScreen = () => {
     const { navigation } = this.props;
     navigation.navigate("Your-Screen-Name");
   };
 
+  onChangePasswordPress = () => {
+    const user = Firebase.auth().currentUser;
+    user
+      .updatePassword(this.state.newPassword)
+      .then(() => {
+        Alert.alert("Password was changed");
+      })
+      .catch(error => {
+        Alert.alert(error.message);
+      });
+  };
   render() {
     return (
       <React.Fragment>
         <ReactNativeSettingsPage>
           <SectionRow text="Select Your Options">
             <NavigateRow
-              text="Navigate Row"
+              text="Log Out"
               iconName="check-square"
               onPressCallback={this.handleSignout}
             />
             <SwitchRow
-              text="Switch Row"
+              text="Change Password"
               iconName="pencil-square"
               _value={this.state.switch}
               _onValueChange={() => {
                 this.setState({ switch: !this.state.switch });
+                this.onChangePasswordPress;
               }}
+              onPressCallback={this.onChangePasswordPress}
             />
+            <TextInput
+              style
+              placeholder="new Password"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChangeText={text => {
+                this.setState(this.setState({ newPassword: text }));
+                console.log(this.state);
+              }}
+            ></TextInput>
             <CheckRow
               text="Check Row"
               iconName="pagelines"
@@ -65,10 +91,10 @@ class Settings extends React.Component {
             />
           </SectionRow>
         </ReactNativeSettingsPage>
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <Text>Settings Screen</Text>
           <Button title="Logout" onPress={this.handleSignout} />
-        </View>
+        </View> */}
       </React.Fragment>
     );
   }
