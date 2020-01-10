@@ -32,12 +32,12 @@ class Settings extends React.Component {
           <SectionRow text="Select Your Options">
             <NavigateRow
               text="Navigate Row"
-              iconName="your-icon-name"
-              onPressCallback={this._navigateToScreen}
+              iconName="check-square"
+              onPressCallback={this.handleSignout}
             />
             <SwitchRow
               text="Switch Row"
-              iconName="your-icon-name"
+              iconName="pencil-square"
               _value={this.state.switch}
               _onValueChange={() => {
                 this.setState({ switch: !this.state.switch });
@@ -45,7 +45,7 @@ class Settings extends React.Component {
             />
             <CheckRow
               text="Check Row"
-              iconName="your-icon-name"
+              iconName="pagelines"
               _color="#000"
               _value={this.state.check}
               _onValueChange={() => {
@@ -54,7 +54,7 @@ class Settings extends React.Component {
             />
             <SliderRow
               text="Slider Row"
-              iconName="your-icon-name"
+              iconName="database"
               _color="#000"
               _min={0}
               _max={100}
