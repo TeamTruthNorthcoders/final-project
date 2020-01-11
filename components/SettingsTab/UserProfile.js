@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
+import { connect } from "react-redux";
 
-export default class UserProfile extends Component {
+class UserProfile extends React.Component {
   render() {
     return (
       <View style={styles.container}>
@@ -14,7 +15,7 @@ export default class UserProfile extends Component {
               }}
             />
             <Text style={styles.name}>JessJelly </Text>
-            <Text style={styles.userInfo}>example@mail.com </Text>
+            <Text style={styles.userInfo}>{this.props.email} </Text>
             <Text style={styles.userInfo}>Manchester </Text>
           </View>
         </View>
@@ -56,3 +57,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5
   }
 });
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    demo: state.demo
+  };
+};
+
+export default connect(mapStateToProps)(UserProfile);

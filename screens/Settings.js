@@ -14,10 +14,6 @@ import { Alert } from "react-native";
 import UserProfile from "../components/SettingsTab/UserProfile";
 
 class Settings extends React.Component {
-  handleSignout = () => {
-    Firebase.auth().signOut();
-    this.props.navigation.navigate("Login");
-  };
   state = {
     check: false,
     switch: false,
@@ -26,9 +22,16 @@ class Settings extends React.Component {
     currentPassword: "",
     clearInput: false
   };
-  _navigateToScreen = () => {
-    const { navigation } = this.props;
-    navigation.navigate("Login");
+  handleSignout = () => {
+    Firebase.auth().signOut();
+    this.props.navigation.navigate("Login");
+  };
+  navigateToUserPlaces = () => {
+    this.props.navigation.navigate("UserPlaces");
+  };
+
+  navigateToUserReviews = () => {
+    this.props.navigation.navigate("UserReviews");
   };
 
   resetFields = () => {
@@ -51,19 +54,20 @@ class Settings extends React.Component {
       });
   };
   render() {
+    const { email } = this.props.user;
     return (
       <React.Fragment>
-        <UserProfile></UserProfile>
+        <UserProfile email={email}></UserProfile>
         <ReactNativeSettingsPage>
           <SectionRow text="Select Your Options">
             <NavigateRow
               text="Log Out"
-              iconName="check-square"
+              iconName="close"
               onPressCallback={this.handleSignout}
             />
             <SwitchRow
               text="Change Password"
-              iconName="pencil-square"
+              iconName="random"
               _value={this.state.switch}
               _onValueChange={() => {
                 this.setState({ switch: !this.state.switch });
@@ -99,7 +103,7 @@ class Settings extends React.Component {
             <CheckRow
               text="Change email"
               autoCorrect={false}
-              iconName="pagelines"
+              iconName="envelope-open"
               _color="#000"
               _value={this.state.check}
               _onValueChange={() => {
@@ -117,16 +121,15 @@ class Settings extends React.Component {
                 this.setState({ newPassword: text });
               }}
             ></TextInput>
-            <SliderRow
-              text="Slider Row"
-              iconName="database"
-              _color="#000"
-              _min={0}
-              _max={100}
-              _value={this.state.value}
-              _onValueChange={value => {
-                this.setState({ value });
-              }}
+            <NavigateRow
+              text="Your BeeSafe Places"
+              iconName="bank"
+              onPressCallback={this.navigateToUserPlaces}
+            />
+            <NavigateRow
+              text="Your BeeSafe Reviews"
+              iconName="commenting"
+              onPressCallback={this.navigateToUserReviews}
             />
           </SectionRow>
         </ReactNativeSettingsPage>
