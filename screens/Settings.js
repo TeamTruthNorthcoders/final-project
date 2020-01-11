@@ -11,6 +11,7 @@ import ReactNativeSettingsPage, {
 } from "react-native-settings-page";
 import { TextInput } from "react-native-gesture-handler";
 import { Alert } from "react-native";
+import UserProfile from "../components/SettingsTab/UserProfile";
 
 class Settings extends React.Component {
   handleSignout = () => {
@@ -52,6 +53,7 @@ class Settings extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <UserProfile></UserProfile>
         <ReactNativeSettingsPage>
           <SectionRow text="Select Your Options">
             <NavigateRow
