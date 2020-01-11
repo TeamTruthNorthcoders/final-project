@@ -9,7 +9,7 @@ class MainPage extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text>Menu</Text>
+          
         </View>
         <Map />
       </View>
