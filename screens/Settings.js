@@ -21,20 +21,29 @@ class Settings extends React.Component {
     check: false,
     switch: false,
     value: 40,
-    newPassword: ""
+    newPassword: "",
+    currentPassword: "",
+    clearInput: false
   };
   _navigateToScreen = () => {
     const { navigation } = this.props;
-    navigation.navigate("Your-Screen-Name");
+    navigation.navigate("Login");
   };
 
+  resetFields = () => {
+    this.setState({ newPassword: "" });
+    this.setState({ currentPassword: "" });
+    this.props.navigation.navigate("Home");
+  };
   onChangePasswordPress = () => {
     const user = Firebase.auth().currentUser;
     user
       .updatePassword(this.state.newPassword)
       .then(() => {
         Alert.alert("Password was succesfully changed!");
-        //potentially navigate back to maps?
+      })
+      .then(() => {
+        this.resetFields();
       })
       .catch(error => {
         Alert.alert(error.message);
@@ -60,17 +69,22 @@ class Settings extends React.Component {
               }}
             />
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
               placeholder="Current Password"
+              autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={true}
               blurOnSubmit
               onChangeText={text => {
-                this.setState({ newPassword: text });
+                this.setState({ currentPassword: text });
               }}
+              value={this.state.currentPassword}
             ></TextInput>
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
+              autoCorrect={false}
               placeholder="Type in your new password here"
               autoCapitalize="none"
               secureTextEntry={true}
@@ -78,9 +92,11 @@ class Settings extends React.Component {
               onChangeText={text => {
                 this.setState({ newPassword: text });
               }}
+              value={this.state.newPassword}
             ></TextInput>
             <CheckRow
               text="Change email"
+              autoCorrect={false}
               iconName="pagelines"
               _color="#000"
               _value={this.state.check}
@@ -89,6 +105,7 @@ class Settings extends React.Component {
               }}
             />
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
               placeholder="Type in your email here"
               autoCapitalize="none"
@@ -121,7 +138,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    padding: 30
   },
   texInput: {
     borderColor: "gray",
