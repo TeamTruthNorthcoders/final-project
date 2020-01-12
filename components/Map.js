@@ -2,10 +2,12 @@ import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 
 // external imports necessary for the map to work
-import MapView from "react-native-maps";
+import MapView, { Callout } from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import Polyline from "@mapbox/polyline";
 import { Marker } from "react-native-maps";
+
+
 //local imports for data that needs to be protected
 import APIKEY from "../key";
 import locations from "./locations.json";
@@ -20,7 +22,8 @@ export default class Map extends React.Component {
     latitude: null,
     longitude: null,
     locations: locations,
-    markerPressed: false
+    markerPressed: false,
+    isLoading : true
   };
 
   //Gets permission for accessing current location and stores it in state
@@ -91,7 +94,8 @@ export default class Map extends React.Component {
         destination: location,
         desLatitude: latitude,
         desLongitude: longitude,
-        markerInfo: [location]
+        markerInfo: [location],
+        isLoading : false
       },
       this.mergeCoords
     );
@@ -112,7 +116,12 @@ export default class Map extends React.Component {
               coordinate={{ latitude, longitude }}
               onPress={this.onMarkerPress(location)}
               style={styles.marker}
-            />
+              // image={require("../assets/icon.png")}
+            >
+              <Callout alphaHitTest tooltip style={styles.popUp}>
+                <PopUpBox time={this.state.time} markerInfo={location} />
+              </Callout>
+            </Marker>
           );
         })}
       </View>
@@ -125,34 +134,31 @@ export default class Map extends React.Component {
     if (latitude) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
-        <MapView
-          showsUserLocation
-          style={styles.map}
-          initialRegion={{
-            latitude,
-            longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
-        >
-          {//puts markers on map
-          this.renderMarkers()}
+        <View>
+          <MapView
+            showsUserLocation
+            style={styles.map}
+            initialRegion={{
+              latitude,
+              longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }}
+          >
+            {//puts markers on map
+            this.renderMarkers()}
 
-          {/* <Text style={styles.estimatedTime}>
-            Estimated Time:{markerPressed && <Text>{time}</Text>}
-          </Text> */}
-
-          {markerPressed && (
-            //Show path when a marker is pressed
-            <MapView.Polyline
-              strokeWidth={2}
-              strokeColor="red"
-              coordinates={coords}
-            />
-          )}
-
-          {markerPressed && <PopUpBox time={time} markerInfo={this.state.markerInfo} />}
-        </MapView>
+            {/* {this.state.isLoading && <Text>Loading</Text>} */}
+            {markerPressed && (
+              //Show path when a marker is pressed
+              <MapView.Polyline
+                strokeWidth={2}
+                strokeColor="red"
+                coordinates={coords}
+              />
+            )}
+          </MapView>
+        </View>
       );
     }
 
@@ -169,9 +175,17 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     width,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center"
+    display: "flex"
+  },
+  popUp: {
+    width: 300,
+    height: 120,
+    borderWidth: 0,
+    paddingBottom: 0,
+    backgroundColor: "white",
+    borderRadius: 20,
+    borderWidth: 5,
+    borderColor: '#e6d400',
+    padding :5,
   }
 });
