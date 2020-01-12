@@ -1,6 +1,7 @@
 import React from "react";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import UserPlaces from "../components/UsersTab/UserPlaces";
+import UserReviews from "../components/UsersTab/UserReviews";
 import { createStackNavigator } from "react-navigation-stack";
 import Settings from "../screens/Settings";
 const userProfileNavigation = createStackNavigator(
@@ -10,6 +11,9 @@ const userProfileNavigation = createStackNavigator(
     },
     UserPlaces: {
       screen: UserPlaces
+    },
+    UserReviews: {
+      screen: UserReviews
     }
   },
   {

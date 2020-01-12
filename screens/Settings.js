@@ -27,11 +27,11 @@ class Settings extends React.Component {
     this.props.navigation.navigate("Login");
   };
   navigateToUserPlaces = () => {
-    this.props.navigation.navigate("UserPlaces");
+    this.props.navigation.navigate("UserPlaces", { email: this.props.user });
   };
 
   navigateToUserReviews = () => {
-    this.props.navigation.navigate("UserReviews");
+    this.props.navigation.navigate("UserReviews", { email: this.props.user });
   };
 
   resetFields = () => {

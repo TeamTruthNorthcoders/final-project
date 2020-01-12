@@ -1,82 +1,108 @@
-import React from "react";
-import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native";
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  FlatList
+} from "react-native";
+
+import * as api from "../../utils/utils";
 
 export default class UserPlaces extends React.Component {
   state = {
-    numColumns: 3,
-    data: [
-      { key: "A" },
-      { key: "B" },
-      { key: "C" },
-      { key: "D" },
-      { key: "E" },
-      { key: "F" },
-      { key: "G" },
-      { key: "H" },
-      { key: "I" },
-      { key: "J" }
-    ]
+    isLoading: true,
+    data: []
   };
+  componentDidMount() {
+    this.fetchPlacesByUser();
+  }
 
-  renderItem = ({ item, index }) => {
-    if (item.empty === true) {
-      return <View style={[styles.item, styles.itemInvisible]} />;
-    }
-    return (
-      <View
-        style={[
-          styles.item,
-          { height: Dimensions.get("window").width / this.state.numColumns }
-        ]}
-      >
-        <Text style={styles.itemText}>{item.key}</Text>
-      </View>
-    );
+  fetchPlacesByUser = () => {
+    api.fetchFavPlacesByUser().then(data => {
+      // console.log(data);
+      this.setState({ data: data, isLoading: false });
+
+      // console.log("state", this.state);
+    });
   };
-
-  formatRow = (data, numColumns) => {
-    const numberOfFullRows = Math.floor(data.length / numColumns);
-    let numberOfElementsLastRow = data.length - numberOfFullRows * numColumns;
-    while (
-      numberOfElementsLastRow !== numColumns &&
-      numberOfElementsLastRow !== 0
-    ) {
-      data.push({ key: `blank-${numberOfElementsLastRow}`, empty: true });
-      numberOfElementsLastRow++;
-    }
-    return data;
-  };
-
   render() {
+    console.log(this.state.data);
+    const isLoading = this.state;
+    // if (isLoading) return <Text>"Loading"</Text>;
     return (
       <FlatList
-        data={this.formatRow(this.state.data, this.state.numColumns)}
-        style={styles.container}
-        renderItem={this.renderItem}
-        numColumns={this.state.numColumns}
+        style={styles.main}
+        data={this.state.data}
+        extraData={this.state}
+        ItemSeparatorComponent={() => {
+          return <View style={styles.separator} />;
+        }}
+        keyExtractor={item => {
+          return item.place_id.toString();
+        }}
+        renderItem={item => {
+          const placehold = item.item;
+          return (
+            <View style={styles.container}>
+              <TouchableOpacity onPress={() => {}}>
+                <Image style={styles.image} source={{ uri: placehold.image }} />
+              </TouchableOpacity>
+              <View style={styles.content}>
+                <View style={styles.contentHeader}>
+                  <Text style={styles.name}>{placehold.place_name}</Text>
+
+                  <Text style={styles.time}>{placehold.rating}</Text>
+                </View>
+                <Text>{placehold.review}</Text>
+              </View>
+            </View>
+          );
+        }}
       />
     );
   }
 }
 
 const styles = StyleSheet.create({
+  main: {
+    backgroundColor: "#ffffff",
+    marginTop: 10
+  },
   container: {
-    flex: 1,
-    marginVertical: 20
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignItems: "flex-start"
   },
-  item: {
-    backgroundColor: "#6495ED",
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    margin: 1
+  content: {
+    marginLeft: 16,
+    flex: 1
   },
-  itemInvisible: {
-    backgroundColor: "transparent"
+  contentHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6
   },
-  itemText: {
-    color: "#fff",
-    fontSize: 30,
+  separator: {
+    height: 1,
+    backgroundColor: "#CCCCCC"
+  },
+  image: {
+    borderRadius: 15,
+    marginLeft: 10,
+    width: 35,
+    height: 35
+  },
+  time: {
+    fontSize: 11,
+    color: "#707070"
+  },
+  name: {
+    fontSize: 15,
     fontWeight: "bold"
   }
 });
