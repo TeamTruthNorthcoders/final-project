@@ -31,6 +31,7 @@ class BottomLinks extends React.Component {
   //   this.props.navigation.navigate("Reviews");
   // };
   render() {
+
     return (
       <View style={styles.links}>
         <CalloutSubview

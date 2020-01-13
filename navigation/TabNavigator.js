@@ -9,6 +9,8 @@ import userProfileNavigation from "./userProfileNavigation";
 const TabNavigator = createBottomTabNavigator(
   {
     Home: StackNavigatorMainPage,
+
+
     Settings: userProfileNavigation
   },
   {
