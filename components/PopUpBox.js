@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { Text, View} from "react-native";
 
 import BottomLinks from "./PopUpLinks";
 import PopUpHeader from "./PopUpHeader";
@@ -13,7 +13,11 @@ class PopUpBox extends React.Component {
         <Text style={{ paddingLeft: 3 }}>
           Estimated Time : {this.props.time}
         </Text>
-        <BottomLinks navigation={this.props.navigation} markerInfo={this.props.markerInfo} />
+
+        <BottomLinks
+          navigation={this.props.navigation}
+          markerInfo={this.props.markerInfo}
+        />
       </View>
     );
   }

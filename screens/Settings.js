@@ -28,7 +28,6 @@ class Settings extends React.Component {
   };
 
   navigateToUserPlaces = () => {
-    console.log(this.props);
     this.props.navigation.navigate("UserPlaces", { email: this.props.user });
   };
 

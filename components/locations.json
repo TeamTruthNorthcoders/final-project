@@ -1,29 +1,62 @@
 [
   {
     "name": "Idk",
-    "address": "",
+    "place_id": "ChIJMXjRNJOxe0gRtTdRSVb6rb8",
+    "formatted_address": "12 avenue des Champs-Elysées",
+    "rating": 8,
     "coords": {
       "latitude": 53.490959,
       "longitude": -2.237891
     },
-    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg"
+    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg",
+    "openingTimes": [
+      "Monday : 9:00am - 6:00pm",
+      "Tuesday : 9:00am - 6:00pm",
+      "Wednesday : 9:00am - 6:00pm",
+      "Thursday : 9:00am - 10:00pm",
+      "Friday : 9:00am - 11:00pm",
+      "Saturday : closed",
+      "Sunday : closed"
+    ]
   },
   {
     "name": "Shack",
-    "address": "135 Nam Kỳ Khởi Nghĩa, Phường Bến Thành, Quận 1, Hồ Chí Minh 700000",
+    "place_id": "ChIJ331csOyxe0gRrcSm_s0uKZU",
+    "formatted_address": "135 Nam Kỳ Khởi Nghĩa, Phường Bến Thành, Quận 1, Hồ Chí Minh 700000",
     "coords": {
       "latitude": 53.484511,
       "longitude": -2.238137
     },
-    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg"
+    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg",
+    "rating": 0,
+    "openingTimes": [
+      "Monday : 8:00am - 6:00pm",
+      "Tuesday : 9:00am - 6:00pm",
+      "Wednesday : 9:00am - 6:00pm",
+      "Thursday : 9:00am - 12:00pm",
+      "Friday : 7:00am - 11:00pm",
+      "Saturday : closed",
+      "Sunday : closed"
+    ]
   },
   {
     "name": "Science and Industry Museum",
-    "address": "",
+    "place_id": "ChIJeyO8PJSxe0gR4t_aMX3LVms",
+    "rating": 1,
+    "formatted_address": "43 route de Genas",
     "coords": {
       "latitude": 53.477852,
       "longitude": -2.254508
     },
-    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg"
+    "image_url": "https://media.glassdoor.com/l/de/cd/ae/b6/the-face-shop.jpg",
+    "openingTimes": [
+      "Monday : 8:00am - 6:00pm",
+      "Tuesday : 9:00am - 6:00pm",
+      "Wednesday : 9:00am - 6:00pm",
+      "Thursday : 9:00am - 12:00pm",
+      "Friday : 7:00am - 11:00pm",
+      "Saturday : 8:00am - 6:00pm",
+      "Sunday : closed"
+    ]
   }
 ]

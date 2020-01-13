@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { CalloutSubview } from "react-native-maps";
 
 //import for triggering the navigation instructions
 import getDirections from "react-native-google-maps-directions";
@@ -26,20 +27,21 @@ class BottomLinks extends React.Component {
     getDirections(data);
   };
 
-  goToReviews = () => {
-    this.props.navigation.navigate("Reviews");
-  };
+  // goToReviews = () => {
+  //   this.props.navigation.navigate("Reviews");
+  // };
   render() {
-    console.log(this.props.navigation);
     return (
       <View style={styles.links}>
-        <TouchableOpacity onPress={this.goToReviews}>
+        <CalloutSubview
+          onPress={e => this.props.navigation.navigate('Reviews', this.props.markerInfo)}
+        ><TouchableOpacity onPress={this.goToReviews}>
           <Text style={styles.reviews}>See reviews </Text>
-        </TouchableOpacity>
+        </TouchableOpacity></CalloutSubview>
         <Text> or</Text>
-        <TouchableOpacity onPress={this.goToDir}>
+        <CalloutSubview onPress={this.goToDir}><TouchableOpacity>
           <Text style={styles.reviews}> Get directions</Text>
-        </TouchableOpacity>
+        </TouchableOpacity></CalloutSubview>
       </View>
     );
   }
