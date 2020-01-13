@@ -19,12 +19,22 @@ import locations from "./locations.json";
 //Other components
 import PopUpBox from "./PopUpBox";
 
+
 const { width } = Dimensions.get("screen");
+
+//axios
+
+import * as api from "../utils/utils";
+
+
 
 export default class Map extends React.Component {
   state = {
     latitude: null,
     longitude: null,
+
+    locations: [],
+
     markerPressed: false,
     locations: locations,
     isLoading: true
@@ -32,17 +42,44 @@ export default class Map extends React.Component {
 
   //Gets permission for accessing current location and stores it in state
   async componentDidMount() {
-    const { status } = await Permissions.getAsync(Permissions.LOCATION);
-
-    if (status !== "granted") {
-      const response = await Permissions.askAsync(Permissions.LOCATION);
-    }
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) =>
-        this.setState({ latitude, longitude }, this.mergeCoords),
-      error => console.log("Error:", error)
-    );
+    this.getAllSafePlaces();
   }
+
+  getAllSafePlaces = () => {
+    api
+      .fetchFavPlacesByUser()
+      .then(data => {
+        return data.map(item => {
+          let newItem = {
+            author: item.author,
+            address: item.formatted_address,
+            coords: {
+              latitude: item.latitude,
+              longitude: item.longitude
+            },
+            name: item.place_name,
+            rating: item.rating,
+            weekday_text: item.weekday_text
+          };
+
+          return newItem;
+        });
+      })
+      .then(mappedData => {
+        const { status } = Permissions.getAsync(Permissions.LOCATION);
+        if (status !== "granted") {
+          const response = Permissions.askAsync(Permissions.LOCATION);
+        }
+        navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude, longitude } }) =>
+            this.setState(
+              { latitude, longitude, locations: mappedData },
+              this.mergeCoords
+            ),
+          error => console.log("Error:", error)
+        );
+      });
+  };
 
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
@@ -107,6 +144,7 @@ export default class Map extends React.Component {
 
   //renders markers on the map
   renderMarkers = () => {
+    // console.log(this.state, "THIS STATE CONSOLE LOG");
     const { locations } = this.state;
     return (
       <View>
