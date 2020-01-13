@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 
-
 export default class Reviews extends React.Component {
   state = {
     places: [],
@@ -16,7 +15,7 @@ export default class Reviews extends React.Component {
   // }
 
   render() {
-    console.log(this.props.navigation.state.params.place_id);
+    console.log(this.props.navigation.state.params);
     return (
       <View>
         <View style={styles.header}>
@@ -24,7 +23,7 @@ export default class Reviews extends React.Component {
             {this.props.navigation.state.params.name}
           </Text>
           <Text style={styles.address}>
-            {this.props.navigation.state.params.formatted_address}
+            {this.props.navigation.state.params.address}
           </Text>
           <Text style={styles.address}>
             {this.props.navigation.state.params.rating}
@@ -32,7 +31,7 @@ export default class Reviews extends React.Component {
         </View>
         <View style={styles.header}>
           <Text style={styles.open}>Opening Times</Text>
-          {this.props.navigation.state.params.openingTimes.map(day => {
+          {this.props.navigation.state.params.weekday_text.map(day => {
             return (
               <Text key={day} style={styles.address}>
                 {day}
