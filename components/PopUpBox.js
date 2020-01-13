@@ -13,7 +13,7 @@ class PopUpBox extends React.Component {
         <Text style={{ paddingLeft: 3 }}>
           Estimated Time : {this.props.time}
         </Text>
-        <BottomLinks markerInfo={this.props.markerInfo} />
+        <BottomLinks navigation={this.props.navigation} markerInfo={this.props.markerInfo} />
       </View>
     );
   }

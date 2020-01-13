@@ -9,8 +9,8 @@ class BottomLinks extends React.Component {
   goToDir = () => {
     const data = {
       destination: {
-        latitude: this.props.markerInfo.latitude,
-        longitude: this.props.markerInfo.longitude
+        latitude: this.props.markerInfo.coords.latitude,
+        longitude: this.props.markerInfo.coords.longitude
       },
       params: [
         {
@@ -25,7 +25,12 @@ class BottomLinks extends React.Component {
     };
     getDirections(data);
   };
+
+  goToReviews = () => {
+    this.props.navigation.navigate("Reviews");
+  };
   render() {
+    console.log(this.props.navigation);
     return (
       <View style={styles.links}>
         <TouchableOpacity onPress={this.goToReviews}>

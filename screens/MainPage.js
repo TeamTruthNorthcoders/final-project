@@ -6,12 +6,13 @@ import Map from "../components/Map";
 
 class MainPage extends React.Component {
   render() {
+    
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           
         </View>
-        <Map />
+        <Map navigation={this.props.navigation} />
       </View>
     );
   }

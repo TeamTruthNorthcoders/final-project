@@ -7,7 +7,6 @@ import * as Permissions from "expo-permissions";
 import Polyline from "@mapbox/polyline";
 import { Marker } from "react-native-maps";
 
-
 //local imports for data that needs to be protected
 import APIKEY from "../key";
 import locations from "./locations.json";
@@ -23,7 +22,7 @@ export default class Map extends React.Component {
     longitude: null,
     locations: locations,
     markerPressed: false,
-    isLoading : true
+    isLoading: true
   };
 
   //Gets permission for accessing current location and stores it in state
@@ -95,7 +94,7 @@ export default class Map extends React.Component {
         desLatitude: latitude,
         desLongitude: longitude,
         markerInfo: [location],
-        isLoading : false
+        isLoading: false
       },
       this.mergeCoords
     );
@@ -119,7 +118,7 @@ export default class Map extends React.Component {
               // image={require("../assets/icon.png")}
             >
               <Callout alphaHitTest tooltip style={styles.popUp}>
-                <PopUpBox time={this.state.time} markerInfo={location} />
+                <PopUpBox navigation={this.props.navigation} time={this.state.time} markerInfo={location} />
               </Callout>
             </Marker>
           );
@@ -129,8 +128,8 @@ export default class Map extends React.Component {
   };
 
   render() {
+    
     const { time, coords, latitude, longitude, markerPressed } = this.state;
-
     if (latitude) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     borderWidth: 5,
-    borderColor: '#e6d400',
-    padding :5,
+    borderColor: "#e6d400",
+    padding: 5
   }
 });

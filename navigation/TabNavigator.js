@@ -5,11 +5,11 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import MainPage from "../screens/MainPage";
 import Settings from "../screens/Settings";
-// import SwitchNavigator from "./SwitchNavigator2";
+import SwitchNavigatorMainPage from "./StackNavigatorMainPage";
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: MainPage,
+    Home: SwitchNavigatorMainPage,
     Settings: Settings
   },
   {

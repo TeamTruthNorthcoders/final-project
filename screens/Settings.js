@@ -9,16 +9,13 @@ class Settings extends React.Component {
     Firebase.auth().signOut();
     this.props.navigation.navigate("Login");
   };
-  // goToUserSafePlaces = () => {
-  //   this.props.navigation.navigate("UserSafePlaces")
-  // }
-
+  
   render() {
     return (
       <View style={styles.container}>
         <Text>Settings Screen</Text>
         <Button title="Logout" onPress={this.handleSignout} />
-        {/* <Button title="UserSafePlaces" onPress={this.goToUserSafePlaces} /> */}
+   
       </View>
     );
   }

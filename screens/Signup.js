@@ -52,6 +52,11 @@ class Signup extends React.Component {
         <TouchableOpacity style={styles.button} onPress={this.props.signup}>
           <Text style={styles.buttonText}>Signup</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Login")}
+        >
+          <Text style={styles.signup}>Go back to Login</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -120,6 +125,10 @@ const styles = StyleSheet.create({
   },
   buttonSignup: {
     fontSize: 12
+  },
+  signup: {
+    color: "black",
+    fontSize: 18
   }
 });
 const mapDispatchToProps = dispatch => {
