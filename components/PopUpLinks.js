@@ -30,7 +30,7 @@ class BottomLinks extends React.Component {
     this.props.navigation.navigate("Reviews");
   };
   render() {
-    console.log(this.props.navigation);
+    // console.log(this.props.navigation);
     return (
       <View style={styles.links}>
         <TouchableOpacity onPress={this.goToReviews}>
