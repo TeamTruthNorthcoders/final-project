@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList
 } from "react-native";
+import StarRating from "react-native-star-rating";
 
 import * as api from "../../utils/utils";
 
@@ -25,11 +26,11 @@ export default class UserPlaces extends React.Component {
       // console.log(data);
       this.setState({ data: data, isLoading: false });
 
-      // console.log("state", this.state);
+      console.log("state", this.state);
     });
   };
+
   render() {
-    console.log(this.state.data);
     const isLoading = this.state;
     // if (isLoading) return <Text>"Loading"</Text>;
     return (
@@ -45,6 +46,7 @@ export default class UserPlaces extends React.Component {
         }}
         renderItem={item => {
           const placehold = item.item;
+
           return (
             <View style={styles.container}>
               <TouchableOpacity onPress={() => {}}>
@@ -54,9 +56,14 @@ export default class UserPlaces extends React.Component {
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>{placehold.place_name}</Text>
 
-                  <Text style={styles.time}>{placehold.rating}</Text>
+                  <Text style={styles.rating}>{placehold.rating}</Text>
                 </View>
                 <Text>{placehold.review}</Text>
+                <StarRating
+                  disabled={false}
+                  maxStars={5}
+                  rating={placehold.rating}
+                />
               </View>
             </View>
           );
@@ -97,7 +104,7 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35
   },
-  time: {
+  rating: {
     fontSize: 11,
     color: "#707070"
   },
