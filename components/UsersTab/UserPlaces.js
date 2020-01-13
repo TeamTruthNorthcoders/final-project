@@ -26,7 +26,7 @@ export default class UserPlaces extends React.Component {
       // console.log(data);
       this.setState({ data: data, isLoading: false });
 
-      console.log("state", this.state);
+      // console.log("state", this.state);
     });
   };
 
