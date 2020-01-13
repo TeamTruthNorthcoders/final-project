@@ -26,6 +26,7 @@ class Settings extends React.Component {
     Firebase.auth().signOut();
     this.props.navigation.navigate("Login");
   };
+
   navigateToUserPlaces = () => {
     console.log(this.props);
     this.props.navigation.navigate("UserPlaces", { email: this.props.user });
@@ -135,6 +136,7 @@ class Settings extends React.Component {
           </SectionRow>
         </ReactNativeSettingsPage>
       </React.Fragment>
+
     );
   }
 }

@@ -4,13 +4,15 @@ import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import MainPage from "../screens/MainPage";
-
+import SwitchNavigatorMainPage from "./StackNavigatorMainPage";
 import userProfileNavigation from "./userProfileNavigation";
+
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: MainPage,
+    Home: SwitchNavigatorMainPage,,
     Settings: userProfileNavigation
+
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

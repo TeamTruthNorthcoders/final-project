@@ -3,7 +3,6 @@ import { createSwitchNavigator, createAppContainer } from "react-navigation";
 
 import Login from "../screens/Login";
 import Signup from "../screens/Signup";
-import MainPage from "../screens/MainPage";
 import TabNav from "./TabNavigator";
 
 const SwitchNavigator = createSwitchNavigator(
@@ -23,6 +22,4 @@ const SwitchNavigator = createSwitchNavigator(
   }
 );
 
-
- export default 
-  createAppContainer(SwitchNavigator);
+export default createAppContainer(SwitchNavigator);
