@@ -11,48 +11,64 @@ import ReactNativeSettingsPage, {
 } from "react-native-settings-page";
 import { TextInput } from "react-native-gesture-handler";
 import { Alert } from "react-native";
+import UserProfile from "../components/SettingsTab/UserProfile";
 
 class Settings extends React.Component {
-  handleSignout = () => {
-    Firebase.auth().signOut();
-    this.props.navigation.navigate("Login");
-  };
   state = {
     check: false,
     switch: false,
     value: 40,
-    newPassword: ""
+    newPassword: "",
+    currentPassword: "",
+    clearInput: false
   };
-  _navigateToScreen = () => {
-    const { navigation } = this.props;
-    navigation.navigate("Your-Screen-Name");
+  handleSignout = () => {
+    Firebase.auth().signOut();
+    this.props.navigation.navigate("Login");
+  };
+  navigateToUserPlaces = () => {
+    console.log(this.props);
+    this.props.navigation.navigate("UserPlaces", { email: this.props.user });
   };
 
+  navigateToUserReviews = () => {
+    this.props.navigation.navigate("UserReviews", { email: this.props.user });
+  };
+
+  resetFields = () => {
+    this.setState({ newPassword: "" });
+    this.setState({ currentPassword: "" });
+    this.props.navigation.navigate("Home");
+  };
   onChangePasswordPress = () => {
     const user = Firebase.auth().currentUser;
     user
       .updatePassword(this.state.newPassword)
       .then(() => {
         Alert.alert("Password was succesfully changed!");
-        //potentially navigate back to maps?
+      })
+      .then(() => {
+        this.resetFields();
       })
       .catch(error => {
         Alert.alert(error.message);
       });
   };
   render() {
+    const { email } = this.props.user;
     return (
       <React.Fragment>
+        <UserProfile email={email}></UserProfile>
         <ReactNativeSettingsPage>
           <SectionRow text="Select Your Options">
             <NavigateRow
               text="Log Out"
-              iconName="check-square"
+              iconName="close"
               onPressCallback={this.handleSignout}
             />
             <SwitchRow
               text="Change Password"
-              iconName="pencil-square"
+              iconName="random"
               _value={this.state.switch}
               _onValueChange={() => {
                 this.setState({ switch: !this.state.switch });
@@ -60,17 +76,22 @@ class Settings extends React.Component {
               }}
             />
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
               placeholder="Current Password"
+              autoCorrect={false}
               autoCapitalize="none"
               secureTextEntry={true}
               blurOnSubmit
               onChangeText={text => {
-                this.setState({ newPassword: text });
+                this.setState({ currentPassword: text });
               }}
+              value={this.state.currentPassword}
             ></TextInput>
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
+              autoCorrect={false}
               placeholder="Type in your new password here"
               autoCapitalize="none"
               secureTextEntry={true}
@@ -78,10 +99,12 @@ class Settings extends React.Component {
               onChangeText={text => {
                 this.setState({ newPassword: text });
               }}
+              value={this.state.newPassword}
             ></TextInput>
             <CheckRow
               text="Change email"
-              iconName="pagelines"
+              autoCorrect={false}
+              iconName="envelope-open"
               _color="#000"
               _value={this.state.check}
               _onValueChange={() => {
@@ -89,6 +112,7 @@ class Settings extends React.Component {
               }}
             />
             <TextInput
+              clearButtonMode="always"
               style={styles.texInput}
               placeholder="Type in your email here"
               autoCapitalize="none"
@@ -98,16 +122,15 @@ class Settings extends React.Component {
                 this.setState({ newPassword: text });
               }}
             ></TextInput>
-            <SliderRow
-              text="Slider Row"
-              iconName="database"
-              _color="#000"
-              _min={0}
-              _max={100}
-              _value={this.state.value}
-              _onValueChange={value => {
-                this.setState({ value });
-              }}
+            <NavigateRow
+              text="Your BeeSafe Places"
+              iconName="bank"
+              onPressCallback={this.navigateToUserPlaces}
+            />
+            <NavigateRow
+              text="Your BeeSafe Reviews"
+              iconName="commenting"
+              onPressCallback={this.navigateToUserReviews}
             />
           </SectionRow>
         </ReactNativeSettingsPage>
@@ -121,7 +144,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    padding: 30
   },
   texInput: {
     borderColor: "gray",
