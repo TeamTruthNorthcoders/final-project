@@ -5,13 +5,10 @@ import { connect } from "react-redux";
 import Map from "../components/Map";
 
 class MainPage extends React.Component {
+
   render() {
-    
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          
-        </View>
         <Map navigation={this.props.navigation} />
       </View>
     );
