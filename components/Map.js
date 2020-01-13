@@ -19,13 +19,11 @@ import locations from "./locations.json";
 //Other components
 import PopUpBox from "./PopUpBox";
 
-
 const { width } = Dimensions.get("screen");
 
 //axios
 
 import * as api from "../utils/utils";
-
 
 export default class Map extends React.Component {
   state = {
@@ -56,6 +54,7 @@ export default class Map extends React.Component {
               latitude: item.latitude,
               longitude: item.longitude
             },
+            id: item.place_id,
             name: item.place_name,
             rating: item.rating,
             weekday_text: item.weekday_text
