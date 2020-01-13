@@ -7,12 +7,10 @@ import MainPage from "../screens/MainPage";
 import SwitchNavigatorMainPage from "./StackNavigatorMainPage";
 import userProfileNavigation from "./userProfileNavigation";
 
-
 const TabNavigator = createBottomTabNavigator(
   {
-    Home: SwitchNavigatorMainPage,,
+    Home: SwitchNavigatorMainPage,
     Settings: userProfileNavigation
-
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
