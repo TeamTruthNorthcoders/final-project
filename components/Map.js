@@ -1,11 +1,19 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Button
+} from "react-native";
+
+import call from "react-native-phone-call";
 
 // external imports necessary for the map to work
-import MapView, { Callout } from "react-native-maps";
+import MapView, { Callout, Marker, CalloutSubview } from "react-native-maps";
 import * as Permissions from "expo-permissions";
 import Polyline from "@mapbox/polyline";
-import { Marker } from "react-native-maps";
 
 //local imports for data that needs to be protected
 import APIKEY from "../key";
@@ -13,19 +21,26 @@ import locations from "./locations.json";
 
 //Other components
 import PopUpBox from "./PopUpBox";
+
 import Spinner from "./Spinner";
+
+
+const { width } = Dimensions.get("screen");
+
 //axios
 
 import * as api from "../utils/utils";
-
-const { width, height } = Dimensions.get("screen");
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Map extends React.Component {
   state = {
     latitude: null,
     longitude: null,
+
     locations: [],
+
     markerPressed: false,
+    locations: locations,
     isLoading: true
   };
 
@@ -46,6 +61,7 @@ export default class Map extends React.Component {
               latitude: item.latitude,
               longitude: item.longitude
             },
+            id: item.place_id,
             name: item.place_name,
             rating: item.rating,
             weekday_text: item.weekday_text
@@ -70,6 +86,14 @@ export default class Map extends React.Component {
       });
   };
 
+  makeCall = () => {
+    const args = {
+      number: "xxxxx-xxxxxx", // String value with the number to call
+      prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+    };
+    call(args).catch(console.error);
+  };
+
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
     const { latitude, longitude, desLatitude, desLongitude } = this.state;
@@ -86,7 +110,7 @@ export default class Map extends React.Component {
   //GM API request for the path that links our current loc (startlocation) and destination(desLoc)
   //The points fo the path are linked and mapped thanks to polyline
   //also calculates the time needed and puts it in state
-  async getDirections(startLoc, desLoc) {
+  getDirections = async (startLoc, desLoc) => {
     try {
       const resp = await fetch(
         `https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${desLoc}&key=${APIKEY}&mode=walking`
@@ -111,7 +135,7 @@ export default class Map extends React.Component {
     } catch (error) {
       console.log("Error: ", error);
     }
-  }
+  };
   //Sets the state coords equal to the coords of the specific marker we press.
   //Those coords are then sent to mergedCoords that format them to be used by getDirections as desLoc
   onMarkerPress = location => () => {
@@ -141,6 +165,7 @@ export default class Map extends React.Component {
           const {
             coords: { latitude, longitude }
           } = location;
+
           return (
             <Marker
               key={idx}
@@ -165,11 +190,22 @@ export default class Map extends React.Component {
 
   render() {
     const { time, coords, latitude, longitude, markerPressed } = this.state;
+
     const { isLoading } = this.state;
     if (isLoading) {
       return <Spinner />;
     }
+
+
+
     if (latitude) {
+      // if (this.state.isLoading) {
+      //   return (
+      //     <View style={styles.container}>
+      //       <ActivityIndicator />
+      //     </View>
+      //   );
+      // } else if (this.state.isLoading === false) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
         <View>
@@ -195,11 +231,18 @@ export default class Map extends React.Component {
                 coordinates={coords}
               />
             )}
+            <Button
+              color="black"
+              title="EMERGENCY"
+              onPress={() => this.makeCall()}
+            />
           </MapView>
+          <View style={styles.buttonContainer}></View>
+
+          {/* <Emergency /> */}
         </View>
       );
     }
-
     return (
       //In case we don't have permission to access their location we don't return the mapbut this message
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -225,5 +268,11 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#e6d400",
     padding: 5
+  },
+  buttonContainer: {
+    // position: "absolute",
+
+    backgroundColor: "#e6005c",
+    alignItems: "center"
   }
 });

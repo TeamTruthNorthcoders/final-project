@@ -5,9 +5,9 @@ import Reviews from "../screens/Reviews";
 
 import MainPage from "../screens/MainPage";
 
-const SwitchNavigatorMainPage = createSwitchNavigator(
+const StackNavigatorMainPage = createStackNavigator(
   {
-    MainPage: {
+    Map: {
       screen: MainPage
     },
     Reviews: {
@@ -15,8 +15,21 @@ const SwitchNavigatorMainPage = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: "MainPage"
+    initialRouteName: "Map",
+    mode: "modal",
+    headerMode: "screen",
+    defaultNavigationOptions: {
+      
+      cardOverlayEnabled: true,
+      headerStyle: {
+        backgroundColor: "#e6005c"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    }
   }
 );
 
-export default createAppContainer(SwitchNavigatorMainPage);
+export default createAppContainer(StackNavigatorMainPage);
