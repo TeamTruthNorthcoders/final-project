@@ -9,30 +9,33 @@ import {
   FlatList
 } from "react-native";
 import StarRating from "react-native-star-rating";
-
+import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
 
 export default class UserPlaces extends React.Component {
   state = {
     isLoading: true,
-    data: []
+    data: [],
+    author: ""
   };
   componentDidMount() {
-    this.fetchPlacesByUser();
+    let author = this.props.navigation.state.params.email.email;
+    this.fetchPlacesByUser(author);
   }
 
-  fetchPlacesByUser = () => {
-    api.fetchFavPlacesByUser().then(data => {
-      // console.log(data);
-      this.setState({ data: data, isLoading: false });
-
-      // console.log("state", this.state);
+  fetchPlacesByUser = author => {
+    api.fetchFavPlacesByUser(author).then(data => {
+      this.setState({ data: data, isLoading: false, author: author });
     });
   };
 
   render() {
-    const isLoading = this.state;
-    // if (isLoading) return <Text>"Loading"</Text>;
+    const isLoading = this.state.isLoading;
+
+    if (isLoading) {
+      return <Spinner></Spinner>;
+    }
+
     return (
       <FlatList
         style={styles.main}
