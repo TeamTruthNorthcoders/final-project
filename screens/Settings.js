@@ -28,7 +28,6 @@ class Settings extends React.Component {
   };
 
   navigateToUserPlaces = () => {
-    console.log(this.props);
     this.props.navigation.navigate("UserPlaces", { email: this.props.user });
   };
 
@@ -56,10 +55,13 @@ class Settings extends React.Component {
       });
   };
   render() {
+    const regex = /([A-Z, a-z])\w+/g;
     const { email } = this.props.user;
+    const obfuscatedEmail = email.replace(regex, "xxxxx");
+
     return (
       <React.Fragment>
-        <UserProfile email={email}></UserProfile>
+        <UserProfile email={obfuscatedEmail}></UserProfile>
         <ReactNativeSettingsPage>
           <SectionRow text="Select Your Options">
             <NavigateRow
@@ -136,7 +138,6 @@ class Settings extends React.Component {
           </SectionRow>
         </ReactNativeSettingsPage>
       </React.Fragment>
-
     );
   }
 }
