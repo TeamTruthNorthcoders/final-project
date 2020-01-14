@@ -63,6 +63,8 @@ export default class UserPlaces extends React.Component {
                   disabled={false}
                   maxStars={5}
                   rating={placehold.rating}
+                  halfStarColor={"gold"}
+                  fullStarColor={"gold"}
                 />
               </View>
             </View>
