@@ -13,7 +13,7 @@ import locations from "./locations.json";
 
 //Other components
 import PopUpBox from "./PopUpBox";
-
+import Spinner from "./Spinner";
 //axios
 
 import * as api from "../utils/utils";
@@ -62,7 +62,7 @@ export default class Map extends React.Component {
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) =>
             this.setState(
-              { latitude, longitude, locations: mappedData },
+              { latitude, longitude, locations: mappedData, isLoading: false },
               this.mergeCoords
             ),
           error => console.log("Error:", error)
@@ -165,6 +165,10 @@ export default class Map extends React.Component {
 
   render() {
     const { time, coords, latitude, longitude, markerPressed } = this.state;
+    const { isLoading } = this.state;
+    if (isLoading) {
+      return <Spinner />;
+    }
     if (latitude) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
@@ -182,7 +186,7 @@ export default class Map extends React.Component {
             {//puts markers on map
             this.renderMarkers()}
 
-            {/* {this.state.isLoading && <Text>Loading</Text>} */}
+            {this.state.isLoading && <Text>Loading</Text>}
             {markerPressed && (
               //Show path when a marker is pressed
               <MapView.Polyline

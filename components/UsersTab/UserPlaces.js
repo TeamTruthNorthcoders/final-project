@@ -9,7 +9,7 @@ import {
   FlatList
 } from "react-native";
 import StarRating from "react-native-star-rating";
-
+import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
 
 export default class UserPlaces extends React.Component {
@@ -33,7 +33,7 @@ export default class UserPlaces extends React.Component {
     const isLoading = this.state.isLoading;
 
     if (isLoading) {
-      return <Text>"Loading Now"</Text>;
+      return <Spinner></Spinner>;
     }
 
     return (
