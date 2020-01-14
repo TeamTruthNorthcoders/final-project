@@ -4,8 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Button
 } from "react-native";
+
+import call from "react-native-phone-call";
 
 // external imports necessary for the map to work
 import MapView, { Callout, Marker, CalloutSubview } from "react-native-maps";
@@ -24,6 +27,7 @@ const { width } = Dimensions.get("screen");
 //axios
 
 import * as api from "../utils/utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Map extends React.Component {
   state = {
@@ -77,6 +81,14 @@ export default class Map extends React.Component {
           error => console.log("Error:", error)
         );
       });
+  };
+
+  makeCall = () => {
+    const args = {
+      number: "xxxxx-xxxxxx", // String value with the number to call
+      prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+    };
+    call(args).catch(console.error);
   };
 
   //function that formats longitude and latitude in one string that we can use in google maps api request
@@ -209,7 +221,15 @@ export default class Map extends React.Component {
                 coordinates={coords}
               />
             )}
+            <Button
+              color="black"
+              title="EMERGENCY"
+              onPress={() => this.makeCall()}
+            />
           </MapView>
+          <View style={styles.buttonContainer}></View>
+
+          {/* <Emergency /> */}
         </View>
       );
     }
@@ -238,5 +258,11 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#e6d400",
     padding: 5
+  },
+  buttonContainer: {
+    // position: "absolute",
+
+    backgroundColor: "#e6005c",
+    alignItems: "center"
   }
 });
