@@ -69,7 +69,8 @@ export default class Map extends React.Component {
             id: item.place_id,
             name: item.place_name,
             rating: item.rating,
-            weekday_text: item.weekday_text
+            weekday_text: item.weekday_text,
+            rating_count: item.rating_count
           };
 
           return newItem;
@@ -316,7 +317,6 @@ export default class Map extends React.Component {
                 coordinates={coords}
               />
             )}
-            
           </MapView>
           <View style={styles.buttonContainer}></View>
 
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column"
     //justifyContent: "flex-start"
   },
   popUp: {
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     borderColor: "#e6d400",
     padding: 5
   },
-touchOp: {
+  touchOp: {
     marginTop: 5
   }
 });

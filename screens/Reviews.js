@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { FlatList } from "react-native";
+import { FlatList, YellowBox, ScrollView } from "react-native";
 import StarRating from "react-native-star-rating";
 import * as api from "../utils/utils";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -15,11 +15,8 @@ export default class Reviews extends React.Component {
   componentDidMount = () => {
     const place_id = this.props.navigation.state.params.id;
     this.getReviewsByPlaceId(place_id);
-    setInterval(() => {
-      this.setState({
-        isLoading: false
-      });
-    }, 3000);
+
+    YellowBox.ignoreWarnings(["VirtualizedLists should never be nested"]);
   };
 
   getReviewsByPlaceId = place_id => {
@@ -33,61 +30,78 @@ export default class Reviews extends React.Component {
   };
 
   render() {
-    const { address, name, weekday_text, rating } = this.state.place;
-
+    console.log(this.state.place);
+    const { address, name, weekday_text } = this.state.place;
+    const rating = this.state.place.rating / this.state.place.rating_count;
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
           <Spinner visible={this.state.isLoading} />
-          <Text>Loading...</Text>
         </View>
       );
     }
 
     return (
       <View>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.address}>{address}</Text>
-            <Text style={styles.open}>{weekday_text}</Text>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={rating}
-              halfStarColor={"gold"}
-              fullStarColor={"gold"}
-            />
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <Text style={styles.place_name}>{name}</Text>
+              <Text style={styles.address}>{address}</Text>
+              <Text style={styles.open}>
+                {weekday_text.map(item => {
+                  return (
+                    <Text
+                      // keyExtractor={item => {
+                      //   return item.toString();
+                      // }}
+                      style={styles.open}
+                    >
+                      {item}
+                      {"\n"}
+                    </Text>
+                  );
+                })}
+              </Text>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={rating}
+                halfStarColor={"gold"}
+                fullStarColor={"gold"}
+              />
+            </View>
           </View>
-        </View>
-        <FlatList
-          style={styles.main}
-          data={this.state.reviews}
-          extraData={this.state}
-          ItemSeparatorComponent={() => {
-            return <View style={styles.separator} />;
-          }}
-          keyExtractor={item => {
-            return item.review_id.toString();
-          }}
-          renderItem={item => {
-            const review = item.item;
-            return (
-              <View style={styles.container}>
-                <View style={styles.header}>
-                  <Text style={styles.name}>
-                    {review.author.substring(0, 3) +
-                      Array(review.author.length + 1).join("*")}
-                  </Text>
-                  <Text style={styles.date}>
-                    {review.date_time.substring(0, 11)}
-                  </Text>
-                  <Text style={styles.reviews}>{review.review}</Text>
+          <FlatList
+            style={styles.main}
+            data={this.state.reviews}
+            extraData={this.state}
+            ItemSeparatorComponent={() => {
+              return <View style={styles.separator} />;
+            }}
+            keyExtractor={item => {
+              return item.review_id.toString();
+            }}
+            renderItem={item => {
+              const review = item.item;
+              return (
+                <View style={styles.container}>
+                  <View style={styles.header}>
+                    <Text style={styles.author}>
+                      {review.author}
+                      {/* {review.author.substring(0, 3) +
+                        Array(review.author.length + 1).join("*")} */}
+                    </Text>
+                    <Text style={styles.date}>
+                      posted on {review.date_time.substring(0, 11)}
+                    </Text>
+                    <Text style={styles.reviews}>{review.review}</Text>
+                  </View>
                 </View>
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        </ScrollView>
       </View>
     );
   }
@@ -112,8 +126,14 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     borderBottomWidth: 2
   },
-  name: {
+  place_name: {
     fontSize: 25,
+    textAlign: "center",
+    paddingBottom: 7,
+    fontWeight: "bold"
+  },
+  author: {
+    fontSize: 18,
     textAlign: "center",
     paddingBottom: 7,
     fontWeight: "bold"
@@ -123,18 +143,14 @@ const styles = StyleSheet.create({
   },
   open: {
     textAlign: "center",
-    paddingBottom: 15,
-    fontSize: 20
+    paddingBottom: 10,
+    paddingTop: 10,
+    fontSize: 18
   },
   reviews: {
     alignSelf: "center",
     width: "90%",
     paddingTop: 20
-  },
-  name: {
-    fontSize: 15,
-    fontWeight: "bold",
-    textAlign: "center"
   },
   date: {
     fontSize: 12,
