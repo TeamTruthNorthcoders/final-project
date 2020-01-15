@@ -4,8 +4,15 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+  Alert
 } from "react-native";
+import { Button } from "react-native-elements";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+let Icon = Ionicons;
+let IconPlus = AntDesign;
 
 // external imports necessary for the map to work
 import MapView, { Callout, Marker, CalloutSubview } from "react-native-maps";
@@ -29,9 +36,15 @@ export default class Map extends React.Component {
   state = {
     latitude: null,
     longitude: null,
-
+    draggableMarkerCoords: {},
     locations: [],
-
+    newPlace: {},
+    b: { latitude: null, longitude: null },
+    // point: {
+    //   x: 0.1,
+    //   y: 0.5
+    // },
+    addAPlace: false,
     markerPressed: false,
     locations: locations,
     isLoading: true
@@ -71,7 +84,12 @@ export default class Map extends React.Component {
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) =>
             this.setState(
-              { latitude, longitude, locations: mappedData },
+              {
+                latitude,
+                longitude,
+                locations: mappedData,
+                b: { latitude: latitude + 0.006, longitude: longitude - 0.001 }
+              },
               this.mergeCoords
             ),
           error => console.log("Error:", error)
@@ -79,6 +97,14 @@ export default class Map extends React.Component {
       });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.newPlace !== this.state.newPlace) {
+      // this.setState(prevState => {
+      //   return { locations: [...prevState.locations, this.state.newPlace] };
+      // });
+      this.getAllSafePlaces()
+    }
+  }
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
     const { latitude, longitude, desLatitude, desLongitude } = this.state;
@@ -144,6 +170,7 @@ export default class Map extends React.Component {
   renderMarkers = () => {
     // console.log(this.state, "THIS STATE CONSOLE LOG");
     const { locations } = this.state;
+    const { point } = this.state;
     return (
       <View>
         {locations.map((location, idx) => {
@@ -157,8 +184,12 @@ export default class Map extends React.Component {
               coordinate={{ latitude, longitude }}
               onPress={this.onMarkerPress(location)}
               style={styles.marker}
+              // calloutOffset={point}
               // image={require("../assets/icon.png")}
             >
+              <View>
+                <Icon name={"md-pin"} size={30} color={"#e6005c"} />
+              </View>
               <Callout alphaHitTest tooltip style={styles.popUp}>
                 <PopUpBox
                   navigation={this.props.navigation}
@@ -173,17 +204,63 @@ export default class Map extends React.Component {
     );
   };
 
+  handleDraggablemarker = () => {
+    this.setState({ addAPlace: true });
+  };
+  updateCoordsDraggableMarker = coords => {
+    this.setState({ draggableMarkerCoords: coords });
+  };
+  onDragEnd = coordinates => {
+    const formattedCoord =
+      coordinates.latitude.toString() + "," + coordinates.longitude.toString();
+    api
+      .getSafePLaceByCoord(formattedCoord)
+      .then(placeObject => {
+        let newItem = {
+          // author: item.author,
+          address: placeObject.formatted_address,
+          coords: {
+            latitude: placeObject.latitude,
+            longitude: placeObject.longitude
+          },
+          id: placeObject.place_id,
+          name: placeObject.place_name,
+          rating: placeObject.rating,
+          weekday_text: placeObject.weekday_text
+        };
+
+        return newItem;
+      })
+      .then(newItem => {
+        Alert.alert(
+          `Do you mean ${newItem.name} ?`,
+          "",
+          [
+            {
+              text: "No, Keep Dragging",
+
+              style: "cancel"
+            },
+            {
+              text: "Yes",
+              onPress: () => {
+                api.postSafePlace(newItem.id).then(() => {
+                  Alert.alert("Thanks, this new place has been added !");
+
+                  this.setState({ addAPlace: false, newPlace: newItem });
+                }).catch;
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+      })
+      .catch(e => console.log(e));
+  };
+
   render() {
     const { time, coords, latitude, longitude, markerPressed } = this.state;
-
     if (latitude) {
-      // if (this.state.isLoading) {
-      //   return (
-      //     <View style={styles.container}>
-      //       <ActivityIndicator />
-      //     </View>
-      //   );
-      // } else if (this.state.isLoading === false) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
         <View>
@@ -193,12 +270,40 @@ export default class Map extends React.Component {
             initialRegion={{
               latitude,
               longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
+              latitudeDelta: 0.0222,
+              longitudeDelta: 0.0221
             }}
           >
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handleDraggablemarker}
+            >
+              <IconPlus
+                name={"pluscircle"}
+                size={50}
+                color={"#ffcc00"}
+                style={{}}
+              />
+            </TouchableOpacity>
+
+            {/* <IconPlus name={"pluscircleo"} size={30} color={"#e6005c"} /> */}
             {//puts markers on map
-            this.renderMarkers()}
+            this.state.addAPlace ? (
+              <Marker
+                coordinate={this.state.b}
+                onDrag={this.updateCoordsDraggableMarker}
+                onDragEnd={event =>
+                  this.onDragEnd(event.nativeEvent.coordinate)
+                }
+                draggable
+              >
+                <View>
+                  <Icon name={"md-pin"} size={50} color={"#0039e6"} />
+                </View>
+              </Marker>
+            ) : (
+              this.renderMarkers()
+            )}
 
             {/* {this.state.isLoading && <Text>Loading</Text>} */}
             {markerPressed && (
@@ -226,10 +331,12 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     width,
-    display: "flex"
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start"
   },
   popUp: {
-    width: 300,
+    width: 320,
     height: 120,
     borderWidth: 0,
     paddingBottom: 0,
@@ -238,5 +345,13 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#e6d400",
     padding: 5
+  },
+  button: {
+    margin: 5,
+    position: "absolute",
+    alignSelf: "flex-end"
+
+    // flexDirection: 'row',
+    // justifyContent :'flex-end'
   }
 });
