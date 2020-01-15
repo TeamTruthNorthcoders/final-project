@@ -1,9 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { connect } from "react-redux";
 import { FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
-
 import * as api from "../utils/utils";
 
 export default class Reviews extends React.Component {
@@ -29,17 +27,14 @@ export default class Reviews extends React.Component {
   };
 
   render() {
-    console.log(this.state.reviews);
     const { address, name, weekday_text, rating } = this.state.place;
     return (
       <View>
         <View style={styles.container}>
-          {/* <TouchableOpacity onPress={() => {}}>
-                <Image style={styles.image} source={{ uri: review.image }} />
-              </TouchableOpacity> */}
           <View style={styles.header}>
-            <Text>{name}</Text>
-            <Text>{weekday_text}</Text>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.address}>{address}</Text>
+            <Text style={styles.open}>{weekday_text}</Text>
             <StarRating
               disabled={false}
               maxStars={5}
@@ -64,12 +59,14 @@ export default class Reviews extends React.Component {
             return (
               <View style={styles.container}>
                 <View style={styles.header}>
-                  <Text>
+                  <Text style={styles.name}>
                     {review.author.substring(0, 3) +
                       Array(review.author.length + 1).join("*")}
                   </Text>
-                  <Text>15 January 2019</Text>
-                  <Text>{review.review}</Text>
+                  <Text style={styles.date}>
+                    {review.date_time.substring(0, 11)}
+                  </Text>
+                  <Text style={styles.reviews}>{review.review}</Text>
                 </View>
               </View>
             );
@@ -81,13 +78,13 @@ export default class Reviews extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   paddingRight: 10,
-  //   paddingLeft: 10,
-  //   paddingVertical: 10,
-  //   flexDirection: "row",
-  //   alignItems: "flex-start"
-  // },
+  container: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingVertical: 10,
+    flexDirection: "row",
+    alignItems: "flex-start"
+  },
   main: {
     backgroundColor: "#ffffff",
     marginTop: 10
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2
   },
   name: {
-    fontSize: 23,
+    fontSize: 25,
     textAlign: "center",
     paddingBottom: 7,
     fontWeight: "bold"
@@ -111,12 +108,20 @@ const styles = StyleSheet.create({
   open: {
     textAlign: "center",
     paddingBottom: 15,
-    fontSize: 23
+    fontSize: 20
   },
   reviews: {
-
     alignSelf: "center",
     width: "90%",
     paddingTop: 20
+  },
+  name: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  date: {
+    fontSize: 12,
+    textAlign: "center"
   }
 });
