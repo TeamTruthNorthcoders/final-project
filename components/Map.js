@@ -5,14 +5,18 @@ import {
   Text,
   View,
   ActivityIndicator,
+
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  Button
 } from "react-native";
 import { Button } from "react-native-elements";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 let Icon = Ionicons;
 let IconPlus = AntDesign;
+
+import call from "react-native-phone-call";
 
 // external imports necessary for the map to work
 import MapView, { Callout, Marker, CalloutSubview } from "react-native-maps";
@@ -26,11 +30,14 @@ import locations from "./locations.json";
 //Other components
 import PopUpBox from "./PopUpBox";
 
+import Spinner from "./Spinner";
+
 const { width } = Dimensions.get("screen");
 
 //axios
 
 import * as api from "../utils/utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Map extends React.Component {
   state = {
@@ -88,14 +95,15 @@ export default class Map extends React.Component {
                 latitude,
                 longitude,
                 locations: mappedData,
-                b: { latitude: latitude + 0.006, longitude: longitude - 0.001 }
-              },
+                b: { latitude: latitude + 0.006, longitude: longitude - 0.001 },
+              isLoading: false },
               this.mergeCoords
             ),
           error => console.log("Error:", error)
         );
       });
   };
+
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.newPlace !== this.state.newPlace) {
@@ -105,6 +113,16 @@ export default class Map extends React.Component {
       this.getAllSafePlaces()
     }
   }
+
+  makeCall = () => {
+    const args = {
+      number: "xxxxx-xxxxxx", // String value with the number to call
+      prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+    };
+    call(args).catch(console.error);
+  };
+
+
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
     const { latitude, longitude, desLatitude, desLongitude } = this.state;
@@ -260,6 +278,14 @@ export default class Map extends React.Component {
 
   render() {
     const { time, coords, latitude, longitude, markerPressed } = this.state;
+
+
+    const { isLoading } = this.state;
+    if (isLoading) {
+      return <Spinner />;
+    }
+
+
     if (latitude) {
       return (
         //MapView component renders the map itself, the properties are specified here to center it on manchester and show current position
@@ -305,7 +331,7 @@ export default class Map extends React.Component {
               this.renderMarkers()
             )}
 
-            {/* {this.state.isLoading && <Text>Loading</Text>} */}
+            {this.state.isLoading && <Text>Loading</Text>}
             {markerPressed && (
               //Show path when a marker is pressed
               <MapView.Polyline
@@ -314,7 +340,15 @@ export default class Map extends React.Component {
                 coordinates={coords}
               />
             )}
+            <Button
+              color="black"
+              title="EMERGENCY"
+              onPress={() => this.makeCall()}
+            />
           </MapView>
+          <View style={styles.buttonContainer}></View>
+
+          {/* <Emergency /> */}
         </View>
       );
     }
@@ -353,5 +387,11 @@ const styles = StyleSheet.create({
 
     // flexDirection: 'row',
     // justifyContent :'flex-end'
+  },
+  buttonContainer: {
+    // position: "absolute",
+
+    backgroundColor: "#e6005c",
+    alignItems: "center"
   }
 });
