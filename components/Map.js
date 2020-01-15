@@ -4,12 +4,19 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
+
+  Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  Button
 } from "react-native";
-import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Button } from "react-native-elements";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 let Icon = Ionicons;
 let IconPlus = AntDesign;
+
+import call from "react-native-phone-call";
 
 // external imports necessary for the map to work
 import MapView, { Callout, Marker, CalloutSubview } from "react-native-maps";
@@ -22,11 +29,15 @@ import locations from "./locations.json";
 
 //Other components
 import PopUpBox from "./PopUpBox";
+
 import Spinner from "./Spinner";
+
 const { width } = Dimensions.get("screen");
 
 //axios
+
 import * as api from "../utils/utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Map extends React.Component {
   state = {
@@ -36,6 +47,10 @@ export default class Map extends React.Component {
     locations: [],
     newPlace: {},
     b: { latitude: null, longitude: null },
+    // point: {
+    //   x: 0.1,
+    //   y: 0.5
+    // },
     addAPlace: false,
     markerPressed: false,
     locations: locations,
@@ -81,8 +96,7 @@ export default class Map extends React.Component {
                 longitude,
                 locations: mappedData,
                 b: { latitude: latitude + 0.006, longitude: longitude - 0.001 },
-                isLoading: false
-              },
+              isLoading: false },
               this.mergeCoords
             ),
           error => console.log("Error:", error)
@@ -90,11 +104,24 @@ export default class Map extends React.Component {
       });
   };
 
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.newPlace !== this.state.newPlace) {
-      this.getAllSafePlaces();
+      // this.setState(prevState => {
+      //   return { locations: [...prevState.locations, this.state.newPlace] };
+      // });
+      this.getAllSafePlaces()
     }
   }
+
+  makeCall = () => {
+    const args = {
+      number: "xxxxx-xxxxxx", // String value with the number to call
+      prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+    };
+    call(args).catch(console.error);
+  };
+
 
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
@@ -196,9 +223,7 @@ export default class Map extends React.Component {
   };
 
   handleDraggablemarker = () => {
-    this.setState(prevState => {
-      return { addAPlace: !prevState.addAPlace };
-    });
+    this.setState({ addAPlace: true });
   };
   updateCoordsDraggableMarker = coords => {
     this.setState({ draggableMarkerCoords: coords });
@@ -252,13 +277,14 @@ export default class Map extends React.Component {
   };
 
   render() {
-  
     const { time, coords, latitude, longitude, markerPressed } = this.state;
+
 
     const { isLoading } = this.state;
     if (isLoading) {
       return <Spinner />;
     }
+
 
     if (latitude) {
       return (
@@ -274,17 +300,21 @@ export default class Map extends React.Component {
               longitudeDelta: 0.0221
             }}
           >
-            {/* <View style={styles.buttonView}> */}
-            <TouchableOpacity onPress={this.handleDraggablemarker}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={this.handleDraggablemarker}
+            >
               <IconPlus
                 name={"pluscircle"}
-                size={60}
-                color={"#e6005c"}
-                style={styles.touchOp}
+                size={50}
+                color={"#ffcc00"}
+                style={{}}
               />
             </TouchableOpacity>
 
-            {this.state.addAPlace ? (
+            {/* <IconPlus name={"pluscircleo"} size={30} color={"#e6005c"} /> */}
+            {//puts markers on map
+            this.state.addAPlace ? (
               <Marker
                 coordinate={this.state.b}
                 onDrag={this.updateCoordsDraggableMarker}
@@ -310,6 +340,11 @@ export default class Map extends React.Component {
                 coordinates={coords}
               />
             )}
+            <Button
+              color="black"
+              title="EMERGENCY"
+              onPress={() => this.makeCall()}
+            />
           </MapView>
           <View style={styles.buttonContainer}></View>
 
@@ -331,8 +366,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width,
     display: "flex",
-    flexDirection: "column"
-    // justifyContent: "flex-start"
+    flexDirection: "column",
+    justifyContent: "flex-start"
   },
   popUp: {
     width: 320,
@@ -345,7 +380,18 @@ const styles = StyleSheet.create({
     borderColor: "#e6d400",
     padding: 5
   },
-  touchOp: {
-    marginTop: 5
+  button: {
+    margin: 5,
+    position: "absolute",
+    alignSelf: "flex-end"
+
+    // flexDirection: 'row',
+    // justifyContent :'flex-end'
+  },
+  buttonContainer: {
+    // position: "absolute",
+
+    backgroundColor: "#e6005c",
+    alignItems: "center"
   }
 });
