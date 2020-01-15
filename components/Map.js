@@ -5,13 +5,12 @@ import {
   Text,
   View,
   ActivityIndicator,
-
   Image,
   TouchableOpacity,
   Alert,
   Button
 } from "react-native";
-import { Button } from "react-native-elements";
+
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 let Icon = Ionicons;
 let IconPlus = AntDesign;
@@ -37,7 +36,6 @@ const { width } = Dimensions.get("screen");
 //axios
 
 import * as api from "../utils/utils";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default class Map extends React.Component {
   state = {
@@ -96,7 +94,8 @@ export default class Map extends React.Component {
                 longitude,
                 locations: mappedData,
                 b: { latitude: latitude + 0.006, longitude: longitude - 0.001 },
-              isLoading: false },
+                isLoading: false
+              },
               this.mergeCoords
             ),
           error => console.log("Error:", error)
@@ -104,13 +103,12 @@ export default class Map extends React.Component {
       });
   };
 
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.newPlace !== this.state.newPlace) {
       // this.setState(prevState => {
       //   return { locations: [...prevState.locations, this.state.newPlace] };
       // });
-      this.getAllSafePlaces()
+      this.getAllSafePlaces();
     }
   }
 
@@ -121,7 +119,6 @@ export default class Map extends React.Component {
     };
     call(args).catch(console.error);
   };
-
 
   //function that formats longitude and latitude in one string that we can use in google maps api request
   mergeCoords = () => {
@@ -279,12 +276,10 @@ export default class Map extends React.Component {
   render() {
     const { time, coords, latitude, longitude, markerPressed } = this.state;
 
-
     const { isLoading } = this.state;
     if (isLoading) {
       return <Spinner />;
     }
-
 
     if (latitude) {
       return (

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 class UserProfile extends React.Component {
   render() {
+    console.log("hello");
     return (
       <View style={styles.container}>
         <View style={styles.header}>
