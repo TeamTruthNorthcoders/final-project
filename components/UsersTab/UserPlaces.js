@@ -1,25 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Image,
-  ScrollView,
   FlatList
 } from "react-native";
 import StarRating from "react-native-star-rating";
 import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
-
-export default class UserPlaces extends React.Component {
+import { connect } from "react-redux";
+class UserPlaces extends React.Component {
   state = {
     isLoading: true,
     data: [],
     author: ""
   };
   componentDidMount() {
-    let author = this.props.navigation.state.params.email.email;
+    let author = this.props.user.email;
     this.fetchPlacesByUser(author);
   }
 
@@ -58,8 +57,6 @@ export default class UserPlaces extends React.Component {
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>{placehold.place_name}</Text>
-
-                  <Text style={styles.rating}>{placehold.rating}</Text>
                 </View>
                 <Text>{placehold.review}</Text>
                 <StarRating
@@ -109,12 +106,16 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35
   },
-  rating: {
-    fontSize: 11,
-    color: "#707070"
-  },
+
   name: {
     fontSize: 15,
     fontWeight: "bold"
   }
 });
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(UserPlaces);

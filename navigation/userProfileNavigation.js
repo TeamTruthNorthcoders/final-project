@@ -17,7 +17,17 @@ const userProfileNavigation = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Settings"
+    initialRouteName: "Settings",
+    defaultNavigationOptions: {
+      cardOverlayEnabled: true,
+      headerStyle: {
+        backgroundColor: "#e6005c"
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold"
+      }
+    }
   }
 );
 
