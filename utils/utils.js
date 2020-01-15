@@ -56,9 +56,9 @@ export const postSafePlace = async place_id => {
     });
 };
 
-export const postReviewByPlaceId = (place_id, author, review, rating) => {
-  return axios
-    .post(`%{baseURL}/safeplaces/${place_id}/reviews`, {
+export const postReviewByPlaceId = async (place_id, author, review, rating) => {
+  return await axios
+    .post(`${baseURL}/safeplaces/${place_id}/reviews`, {
       author: author,
       review: review,
       place_id: place_id,
@@ -67,4 +67,13 @@ export const postReviewByPlaceId = (place_id, author, review, rating) => {
     .then(({ data }) => {
       return data;
     });
+};
+
+export const deleteReviewByReviewId = async review_id => {
+  return await axios
+    .delete(`${baseURL}/reviews/${review_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+  // console.log("logged");
 };
