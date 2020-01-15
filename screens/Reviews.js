@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
+
 import * as api from "../utils/utils";
 
 export default class Reviews extends React.Component {
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 23
   },
   reviews: {
+
     alignSelf: "center",
     width: "90%",
     paddingTop: 20
