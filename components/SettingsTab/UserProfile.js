@@ -26,7 +26,8 @@ class UserProfile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#DCDCDC"
+    backgroundColor: "#DAFA00",
+    borderRadius: 50
   },
   headerContent: {
     padding: 30,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    demo: state.demo
+    user: state.user
   };
 };
 

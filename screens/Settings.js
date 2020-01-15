@@ -29,7 +29,7 @@ class Settings extends React.Component {
   };
 
   navigateToUserPlaces = () => {
-    this.props.navigation.navigate("UserPlaces", { email: this.props.user });
+    this.props.navigation.navigate("UserPlaces");
   };
 
   navigateToUserReviews = () => {
@@ -55,7 +55,6 @@ class Settings extends React.Component {
       });
   };
   changeEmail = () => {
-    console.log(this.state.newEmail);
     const user = Firebase.auth().currentUser;
     user
       .updateEmail(this.state.newEmail)
@@ -76,7 +75,7 @@ class Settings extends React.Component {
 
     return (
       <React.Fragment>
-        <ScrollView>
+        <ScrollView style={ScrollView}>
           <ReactNativeSettingsPage>
             <UserProfile email={obfuscatedEmail}></UserProfile>
             <SectionRow text="Select Your Options">
