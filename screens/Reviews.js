@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   reviews: {
+
     alignSelf: "center",
     width: "90%",
     paddingTop: 20

@@ -49,7 +49,7 @@ export default class UserPlaces extends React.Component {
         }}
         renderItem={item => {
           const placehold = item.item;
-
+          const combinedRating = placehold.rating / placehold.rating_count;
           return (
             <View style={styles.container}>
               <TouchableOpacity onPress={() => {}}>
@@ -65,7 +65,7 @@ export default class UserPlaces extends React.Component {
                 <StarRating
                   disabled={false}
                   maxStars={5}
-                  rating={placehold.rating}
+                  rating={combinedRating}
                   halfStarColor={"gold"}
                   fullStarColor={"gold"}
                 />
