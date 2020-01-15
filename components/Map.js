@@ -24,7 +24,6 @@ import PopUpBox from "./PopUpBox";
 
 import Spinner from "./Spinner";
 
-
 const { width } = Dimensions.get("screen");
 
 //axios
@@ -196,8 +195,6 @@ export default class Map extends React.Component {
       return <Spinner />;
     }
 
-
-
     if (latitude) {
       // if (this.state.isLoading) {
       //   return (
@@ -215,8 +212,8 @@ export default class Map extends React.Component {
             initialRegion={{
               latitude,
               longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
+              latitudeDelta: 0.00922,
+              longitudeDelta: 0.00421
             }}
           >
             {//puts markers on map
