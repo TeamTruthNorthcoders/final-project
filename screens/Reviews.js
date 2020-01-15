@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
 import * as api from "../utils/utils";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default class Reviews extends React.Component {
   state = {
@@ -14,6 +15,11 @@ export default class Reviews extends React.Component {
   componentDidMount = () => {
     const place_id = this.props.navigation.state.params.id;
     this.getReviewsByPlaceId(place_id);
+    setInterval(() => {
+      this.setState({
+        isLoading: false
+      });
+    }, 3000);
   };
 
   getReviewsByPlaceId = place_id => {
@@ -28,6 +34,16 @@ export default class Reviews extends React.Component {
 
   render() {
     const { address, name, weekday_text, rating } = this.state.place;
+
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <Spinner visible={this.state.isLoading} />
+          <Text>Loading...</Text>
+        </View>
+      );
+    }
+
     return (
       <View>
         <View style={styles.container}>
