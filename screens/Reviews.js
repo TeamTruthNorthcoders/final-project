@@ -27,13 +27,13 @@ export default class Reviews extends React.Component {
   };
 
   render() {
-    console.log(this.state.reviews);
     const { address, name, weekday_text, rating } = this.state.place;
     return (
       <View>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.name}>{name}</Text>
+            <Text style={styles.address}>{address}</Text>
             <Text style={styles.open}>{weekday_text}</Text>
             <StarRating
               disabled={false}
@@ -63,7 +63,9 @@ export default class Reviews extends React.Component {
                     {review.author.substring(0, 3) +
                       Array(review.author.length + 1).join("*")}
                   </Text>
-                  <Text style={styles.date}>{review.date_time}</Text>
+                  <Text style={styles.date}>
+                    {review.date_time.substring(0, 11)}
+                  </Text>
                   <Text style={styles.reviews}>{review.review}</Text>
                 </View>
               </View>
