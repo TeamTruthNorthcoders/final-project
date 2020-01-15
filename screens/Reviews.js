@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { connect } from "react-redux";
 import { FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
 import * as api from "../utils/utils";
@@ -110,7 +109,6 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   reviews: {
-
     alignSelf: "center",
     width: "90%",
     paddingTop: 20
