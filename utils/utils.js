@@ -55,3 +55,16 @@ export const postSafePlace = async place_id => {
       return data;
     });
 };
+
+export const postReviewByPlaceId = (place_id, author, review, rating) => {
+  return axios
+    .post(`%{baseURL}/safeplaces/${place_id}/reviews`, {
+      author: author,
+      review: review,
+      place_id: place_id,
+      rating: rating
+    })
+    .then(({ data }) => {
+      return data;
+    });
+};

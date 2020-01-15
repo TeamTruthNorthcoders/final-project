@@ -4,6 +4,7 @@ import { FlatList, YellowBox, ScrollView } from "react-native";
 import StarRating from "react-native-star-rating";
 import * as api from "../utils/utils";
 import Spinner from "react-native-loading-spinner-overlay";
+import AddReviewForm from "../components/AddReviewForm";
 
 export default class Reviews extends React.Component {
   state = {
@@ -72,6 +73,10 @@ export default class Reviews extends React.Component {
               />
             </View>
           </View>
+          <View>
+            {/* <Text>Add a review</Text> */}
+            <AddReviewForm />
+          </View>
           <FlatList
             style={styles.main}
             data={this.state.reviews}
@@ -125,6 +130,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 30,
     borderBottomWidth: 2
+  },
+  form: {
+    justifyContent: "center"
   },
   place_name: {
     fontSize: 25,
