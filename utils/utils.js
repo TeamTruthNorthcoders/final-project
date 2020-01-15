@@ -11,3 +11,29 @@ export const fetchFavPlacesByUser = async author => {
       return Items;
     });
 };
+
+export const fetchReviews = async author => {
+  return await axios
+    .get(`${baseURL}/reviews`, {
+      params: { author }
+    })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const fetchPlaceByPlaceId = async place_id => {
+  return await axios
+    .get(`${baseURL}/safeplaces/${place_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const fetchReviewsByPlaceId = async place_id => {
+  return await axios
+    .get(`${baseURL}/safeplaces/${place_id}/reviews`)
+    .then(({ data }) => {
+      return data;
+    });
+};
