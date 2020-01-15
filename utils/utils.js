@@ -12,15 +12,29 @@ export const fetchFavPlacesByUser = async author => {
     });
 };
 
+export const fetchReviews = async author => {
+  return await axios
+    .get(`${baseURL}/reviews`, {
+      params: { author }
+    })
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const fetchPlaceByPlaceId = async place_id => {
+  return await axios
+    .get(`${baseURL}/safeplaces/${place_id}`).then(({data}) => {
+    return data })
+}
+  
 export const fetchReviewsByPlaceId = async place_id => {
   return await axios
     .get(`${baseURL}/safeplaces/${place_id}/reviews`, {
       params: {}
     })
-    .then(reviews => {
-      // const places = Object.keys(data)[0];
+    .then(reviews => 
       console.log(reviews);
-      // console.log("hi", Items);
     })
     .catch(e => console.log(e));
 };
@@ -33,8 +47,16 @@ export const getSafePLaceByCoord = async coord => {
     });
 };
 
+export const fetchReviewsByPlaceId = async place_id => {
+  return await axios
+    .get(`${baseURL}/safeplaces/${place_id}/reviews`)
+    .then(({ data }) => {
+      return data;
+    });
+  
 export const postSafePlace = async place_id => {
   return await axios.post(`${baseURL}/safeplaces/${place_id}`, {
     author: "me"
-  });
+  }).then(({data}) => {
+    return data})
 };

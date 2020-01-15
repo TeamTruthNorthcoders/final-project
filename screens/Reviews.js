@@ -1,54 +1,97 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-
+import { connect } from "react-redux";
+import { FlatList } from "react-native";
+import StarRating from "react-native-star-rating";
 
 import * as api from "../utils/utils";
 
 export default class Reviews extends React.Component {
   state = {
-    places: [],
-    reviews: []
+    place: [],
+    reviews: [],
+    isLoading: true
   };
 
-  async componentDidMount() {
-    api.fetchReviewsByPlaceId()
+  componentDidMount = () => {
+    const place_id = this.props.navigation.state.params.id;
+    this.getReviewsByPlaceId(place_id);
+  };
 
-  }
+  getReviewsByPlaceId = place_id => {
+    api.fetchReviewsByPlaceId(place_id).then(data => {
+      this.setState({
+        reviews: data.Items,
+        place: this.props.navigation.state.params,
+        isLoading: false
+      });
+    });
+  };
 
   render() {
-    console.log(this.props.navigation.state.params);
+    console.log(this.state.reviews);
+    const { address, name, weekday_text, rating } = this.state.place;
     return (
       <View>
-        <View style={styles.header}>
-          <Text style={styles.name}>
-            {this.props.navigation.state.params.name}
-          </Text>
-          <Text style={styles.address}>
-            {this.props.navigation.state.params.address}
-          </Text>
-          <Text style={styles.address}>
-            {this.props.navigation.state.params.rating}
-          </Text>
+        <View style={styles.container}>
+          {/* <TouchableOpacity onPress={() => {}}>
+                <Image style={styles.image} source={{ uri: review.image }} />
+              </TouchableOpacity> */}
+          <View style={styles.header}>
+            <Text>{name}</Text>
+            <Text>{weekday_text}</Text>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={rating}
+              halfStarColor={"gold"}
+              fullStarColor={"gold"}
+            />
+          </View>
         </View>
-        <View style={styles.header}>
-          <Text style={styles.open}>Opening Times</Text>
-          {this.props.navigation.state.params.weekday_text.map(day => {
+        <FlatList
+          style={styles.main}
+          data={this.state.reviews}
+          extraData={this.state}
+          ItemSeparatorComponent={() => {
+            return <View style={styles.separator} />;
+          }}
+          keyExtractor={item => {
+            return item.review_id.toString();
+          }}
+          renderItem={item => {
+            const review = item.item;
             return (
-              <Text key={day} style={styles.address}>
-                {day}
-              </Text>
+              <View style={styles.container}>
+                <View style={styles.header}>
+                  <Text>
+                    {review.author.substring(0, 3) +
+                      Array(review.author.length + 1).join("*")}
+                  </Text>
+                  <Text>15 January 2019</Text>
+                  <Text>{review.review}</Text>
+                </View>
+              </View>
             );
-          })}
-        </View>
-        <View style={styles.reviews}>
-          <Text style={styles.open}>Reviews</Text>
-        </View>
+          }}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  // container: {
+  //   paddingRight: 10,
+  //   paddingLeft: 10,
+  //   paddingVertical: 10,
+  //   flexDirection: "row",
+  //   alignItems: "flex-start"
+  // },
+  main: {
+    backgroundColor: "#ffffff",
+    marginTop: 10
+  },
   header: {
     alignSelf: "center",
     width: "90%",

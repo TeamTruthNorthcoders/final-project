@@ -9,6 +9,7 @@ import {
   FlatList
 } from "react-native";
 import * as api from "../../utils/utils";
+import StarRating from "react-native-star-rating";
 
 export default class UserReviews extends Component {
   state = {
@@ -18,13 +19,12 @@ export default class UserReviews extends Component {
 
   componentDidMount = () => {
     let author = this.props.navigation.state.params.email.email;
-    // console.log(author);
     this.fetchReviewsByAuthor(author);
   };
 
   fetchReviewsByAuthor = author => {
     api.fetchReviews(author).then(data => {
-      this.setState({ data: data.Items, isLoading: false });
+      this.setState({ data: data.Items });
     });
   };
 
@@ -38,22 +38,30 @@ export default class UserReviews extends Component {
           return <View style={styles.separator} />;
         }}
         keyExtractor={item => {
-          console.log(item);
           return item.review_id.toString();
         }}
         renderItem={item => {
-          const placehold = item.item;
+          const review = item.item;
           return (
             <View style={styles.container}>
               <TouchableOpacity onPress={() => {}}>
-                <Image style={styles.image} source={{ uri: placehold.image }} />
+                <Image style={styles.image} source={{ uri: review.image }} />
               </TouchableOpacity>
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
-                  <Text style={styles.name}>{placehold.name}</Text>
-                  {/* <Text style={styles.time}>2:44am</Text> */}
+                  <Text style={styles.name}>
+                    {review.author.substring(0, 3) +
+                      Array(review.author.length + 1).join("*")}
+                  </Text>
                 </View>
-                <Text>{placehold.review}</Text>
+                <Text>{review.review}</Text>
+                <StarRating
+                  disabled={false}
+                  maxStars={5}
+                  rating={review.rating}
+                  halfStarColor={"gold"}
+                  fullStarColor={"gold"}
+                />
               </View>
             </View>
           );
