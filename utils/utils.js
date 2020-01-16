@@ -49,20 +49,27 @@ export const fetchReviewsByPlaceId = async place_id => {
 export const postSafePlace = async place_id => {
   return await axios
     .post(`${baseURL}/safeplaces/${place_id}`, {
-      author: "me"
+      author: "testy@mctest.face"
     })
     .then(({ data }) => {
       return data;
     });
 };
 
-export const postReviewByPlaceId = async (place_id, author, review, rating) => {
+export const postReviewByPlaceId = async (
+  place_name,
+  place_id,
+  author,
+  review,
+  rating
+) => {
   return await axios
     .post(`${baseURL}/safeplaces/${place_id}/reviews`, {
+      place_name: place_name,
       author: author,
       review: review,
       place_id: place_id,
-      rating: rating
+      rating_value: rating
     })
     .then(({ data }) => {
       return data;
@@ -72,6 +79,22 @@ export const postReviewByPlaceId = async (place_id, author, review, rating) => {
 export const deleteReviewByReviewId = async review_id => {
   return await axios
     .delete(`${baseURL}/reviews/${review_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const deletePlaceByPlaceId = async place_id => {
+  return await axios
+    .delete(`${baseURL}/safeplaces/${place_id}`)
+    .then(({ data }) => {
+      return data;
+    });
+};
+
+export const getPlaceByPlaceId = async place_id => {
+  return await axios
+    .get(`${baseURL}/safeplaces/${place_id}`)
     .then(({ data }) => {
       return data;
     });

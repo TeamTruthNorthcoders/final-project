@@ -11,6 +11,7 @@ import {
 import * as api from "../../utils/utils";
 import StarRating from "react-native-star-rating";
 import BeeSafeButton from "../BeeSafeButton";
+import Spinner from "../Spinner";
 
 export default class UserReviews extends Component {
   state = {
@@ -19,17 +20,29 @@ export default class UserReviews extends Component {
   };
 
   componentDidMount = () => {
-    let author = this.props.navigation.state.params.email.email;
+    // let author = this.props.navigation.state.params.email.email;
+    let author = "me";
+    this.fetchReviewsByAuthor(author);
+  };
+
+  componentDidUpdate = () => {
+    let author = "me";
     this.fetchReviewsByAuthor(author);
   };
 
   fetchReviewsByAuthor = author => {
     api.fetchReviews(author).then(data => {
-      this.setState({ data: data.Items });
+      this.setState({ data: data.Items, isLoading: false });
     });
   };
 
   render() {
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return <Spinner></Spinner>;
+    }
+
     return (
       <FlatList
         style={styles.main}
@@ -45,9 +58,6 @@ export default class UserReviews extends Component {
           const review = item.item;
           return (
             <View style={styles.container}>
-              <TouchableOpacity onPress={() => {}}>
-                <Image style={styles.image} source={{ uri: review.image }} />
-              </TouchableOpacity>
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>
@@ -91,9 +101,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   content: {
-    // alignContent: "center",
+    alignContent: "center",
     // width: "100%",
-    marginLeft: -40,
     flex: 1
   },
   contentHeader: {

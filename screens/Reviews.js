@@ -20,6 +20,12 @@ export default class Reviews extends React.Component {
     YellowBox.ignoreWarnings(["VirtualizedLists should never be nested"]);
   };
 
+  componentDidUpdate = () => {
+    const place_id = this.props.navigation.state.params.id;
+    this.getReviewsByPlaceId(place_id);
+    this.getPlacebyId(place_id)
+  };
+
   getReviewsByPlaceId = place_id => {
     api.fetchReviewsByPlaceId(place_id).then(data => {
       this.setState({
@@ -33,6 +39,7 @@ export default class Reviews extends React.Component {
   render() {
     const { address, name, weekday_text } = this.state.place;
     const rating = this.state.place.rating / this.state.place.rating_count;
+
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -57,7 +64,6 @@ export default class Reviews extends React.Component {
                     // }}
                     // style={styles.open}
                     >
-                      {console.log(item.toString())}
                       {item}
                       {"\n"}
                     </Text>
@@ -77,6 +83,7 @@ export default class Reviews extends React.Component {
             <AddReviewForm
               id={this.state.place.id}
               author={this.state.place.author}
+              place_name={name}
             />
           </View>
           <FlatList

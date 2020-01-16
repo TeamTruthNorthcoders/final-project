@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#e6005c",
     borderRadius: 10,
     width: "55%",
-    height: "53%%",
+    // height: "5%",
+    // height: "53%%",
     alignSelf: "center",
     marginTop: "5%"
   },
@@ -33,6 +34,6 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     fontSize: 15,
-    paddingTop: "5%"
+    padding: "5%"
   }
 });

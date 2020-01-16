@@ -16,12 +16,14 @@ export default class AddReviewForm extends Component {
     review: ""
   };
 
-  handleSubmit = (place_id, author) => {
+  handleSubmit = (place_id, author, place_name) => {
     const review = this.state.review.review;
     const rating = this.state.rating;
-    api.postReviewByPlaceId(place_id, author, review, rating).then(data => {
-      this.setState({ newReview: data.item, review: "", rating: 0 });
-    });
+    api
+      .postReviewByPlaceId(place_name, place_id, author, review, rating)
+      .then(data => {
+        this.setState({ newReview: data.item, review: "", rating: 0 });
+      });
   };
 
   ratingCompleted = rating => {
@@ -34,7 +36,7 @@ export default class AddReviewForm extends Component {
   };
 
   render() {
-    const { id, author } = this.props;
+    const { id, author, place_name } = this.props;
     return (
       <View>
         <View style={styles.container}>
@@ -54,7 +56,7 @@ export default class AddReviewForm extends Component {
           />
           <Button
             title="Post Review!"
-            onPress={() => this.handleSubmit(id, author)}
+            onPress={() => this.handleSubmit(id, author, place_name)}
           />
         </View>
       </View>

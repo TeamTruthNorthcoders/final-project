@@ -1,35 +1,36 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  FlatList
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
 import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
 import { connect } from "react-redux";
+import BeeSafeButton from "../BeeSafeButton";
+
 class UserPlaces extends React.Component {
   state = {
     isLoading: true,
-    data: [],
-    author: ""
+    data: []
   };
+
   componentDidMount() {
-    let author = this.props.user.email;
+    // let author = this.props.user.email;
+    const author = "me";
     this.fetchPlacesByUser(author);
   }
 
+  componentDidUpdate = () => {
+    const author = "me";
+    this.fetchPlacesByUser(author);
+  };
+
   fetchPlacesByUser = author => {
     api.fetchFavPlacesByUser(author).then(data => {
-      this.setState({ data: data, isLoading: false, author: author });
+      this.setState({ data: data, isLoading: false });
     });
   };
 
   render() {
-    const isLoading = this.state.isLoading;
+    const { isLoading } = this.state;
 
     if (isLoading) {
       return <Spinner></Spinner>;
@@ -47,24 +48,27 @@ class UserPlaces extends React.Component {
           return item.place_id.toString();
         }}
         renderItem={item => {
-          const placehold = item.item;
-          const combinedRating = placehold.rating / placehold.rating_count;
+          const place = item.item;
+          const combinedRating = place.rating / place.rating_count;
           return (
             <View style={styles.container}>
-              <TouchableOpacity onPress={() => {}}>
-                <Image style={styles.image} source={{ uri: placehold.image }} />
-              </TouchableOpacity>
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
-                  <Text style={styles.name}>{placehold.place_name}</Text>
+                  <Text style={styles.name}>{place.place_name}</Text>
                 </View>
-                <Text>{placehold.review}</Text>
+                <Text>{place.review}</Text>
                 <StarRating
                   disabled={false}
                   maxStars={5}
                   rating={combinedRating}
                   halfStarColor={"gold"}
                   fullStarColor={"gold"}
+                />
+                <BeeSafeButton
+                  apiCallbackFunction={() =>
+                    api.deletePlaceByPlaceId(place.place_id)
+                  }
+                  title={"Delete"}
                 />
               </View>
             </View>
