@@ -75,5 +75,4 @@ export const deleteReviewByReviewId = async review_id => {
     .then(({ data }) => {
       return data;
     });
-  // console.log("logged");
 };

@@ -31,7 +31,6 @@ export default class Reviews extends React.Component {
   };
 
   render() {
-    console.log(this.state.place);
     const { address, name, weekday_text } = this.state.place;
     const rating = this.state.place.rating / this.state.place.rating_count;
     if (this.state.isLoading) {
@@ -53,11 +52,12 @@ export default class Reviews extends React.Component {
                 {weekday_text.map(item => {
                   return (
                     <Text
-                      // keyExtractor={item => {
-                      //   return item.toString();
-                      // }}
-                      style={styles.open}
+                    // keyExtractor={item => {
+                    //   return item.toString();
+                    // }}
+                    // style={styles.open}
                     >
+                      {console.log(item.toString())}
                       {item}
                       {"\n"}
                     </Text>
@@ -74,8 +74,10 @@ export default class Reviews extends React.Component {
             </View>
           </View>
           <View>
-            {/* <Text>Add a review</Text> */}
-            <AddReviewForm />
+            <AddReviewForm
+              id={this.state.place.id}
+              author={this.state.place.author}
+            />
           </View>
           <FlatList
             style={styles.main}
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   open: {
-    textAlign: "center",
+    textAlign: "right",
     paddingBottom: 10,
     paddingTop: 10,
     fontSize: 18
