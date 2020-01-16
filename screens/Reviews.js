@@ -23,7 +23,6 @@ export default class Reviews extends React.Component {
   componentDidUpdate = () => {
     const place_id = this.props.navigation.state.params.id;
     this.getReviewsByPlaceId(place_id);
-    this.getPlacebyId(place_id)
   };
 
   getReviewsByPlaceId = place_id => {
