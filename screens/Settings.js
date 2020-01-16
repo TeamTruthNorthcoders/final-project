@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
 import Firebase from "../config/Firebase";
 import ReactNativeSettingsPage, {
@@ -12,6 +19,8 @@ import ReactNativeSettingsPage, {
 import { TextInput } from "react-native-gesture-handler";
 import { Alert } from "react-native";
 import UserProfile from "../components/SettingsTab/UserProfile";
+import call from "react-native-phone-call";
+import { AsyncStorage } from "react-native";
 
 class Settings extends React.Component {
   state = {
@@ -23,6 +32,22 @@ class Settings extends React.Component {
     clearInput: false,
     newEmail: ""
   };
+
+  _retrieveData = async () => {
+    try {
+      console.log("We are in retrieve data");
+      const value = await AsyncStorage.getItem("userDetails");
+      console.log("this is the value within retrievedata", value);
+      if (value !== null) {
+        return value;
+        // We have data!!
+      }
+    } catch (error) {
+      console.log(error);
+      // Error retrieving data
+    }
+  };
+
   handleSignout = () => {
     Firebase.auth().signOut();
     this.props.navigation.navigate("Login");
@@ -34,6 +59,10 @@ class Settings extends React.Component {
 
   navigateToUserReviews = () => {
     this.props.navigation.navigate("UserReviews", { email: this.props.user });
+  };
+
+  navigateToEmergencyContPage = () => {
+    this.props.navigation.navigate("EmergencyContact");
   };
 
   resetFields = () => {
@@ -68,6 +97,22 @@ class Settings extends React.Component {
         Alert.alert(error.message);
       });
   };
+
+  makeCall = async () => {
+    try {
+      const phoneNumber = await this._retrieveData();
+      console.log("this is the phone number", phoneNumber);
+      const args = {
+        number: phoneNumber.toString(), // String value with the number to call
+        prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+      };
+      call(args);
+    } catch (error) {
+      console.log(error);
+      // Error retrieving data
+    }
+  };
+
   render() {
     const regex = /([A-Z, a-z])\w+/g;
     const { email } = this.props.user;
@@ -78,11 +123,22 @@ class Settings extends React.Component {
         <ScrollView style={ScrollView}>
           <ReactNativeSettingsPage>
             <UserProfile email={obfuscatedEmail}></UserProfile>
+            <TouchableOpacity
+              style={styles.emergencyButton}
+              onPress={() => this.makeCall()}
+            >
+              <Text>This is AN EMERGENCY</Text>
+            </TouchableOpacity>
             <SectionRow text="Select Your Options">
               <NavigateRow
                 text="Log Out"
                 iconName="close"
                 onPressCallback={this.handleSignout}
+              />
+              <NavigateRow
+                text="Change Emergency Contact"
+                iconName="phone"
+                onPressCallback={this.navigateToEmergencyContPage}
               />
               <SwitchRow
                 text="Change Password"
@@ -174,6 +230,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 15,
     height: 40
+  },
+  emergencyButton: {
+    borderColor: "red",
+    borderWidth: 4,
+    height: 40
+  },
+  ScrollView: {
+    flexDirection: "row"
   }
 });
 

@@ -4,6 +4,8 @@ import UserPlaces from "../components/UsersTab/UserPlaces";
 import UserReviews from "../components/UsersTab/UserReviews";
 import { createStackNavigator } from "react-navigation-stack";
 import Settings from "../screens/Settings";
+import EmergencyContact from "../components/SettingsTab/EmergencyButton";
+
 const userProfileNavigation = createStackNavigator(
   {
     Settings: {
@@ -14,6 +16,9 @@ const userProfileNavigation = createStackNavigator(
     },
     UserReviews: {
       screen: UserReviews
+    },
+    EmergencyContact: {
+      screen: EmergencyContact
     }
   },
   {
