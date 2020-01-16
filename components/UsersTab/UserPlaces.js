@@ -4,6 +4,7 @@ import StarRating from "react-native-star-rating";
 import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
 import BeeSafeButton from "../BeeSafeButton";
+import { connect } from "react-redux";
 
 class UserPlaces extends React.Component {
   state = {
@@ -21,6 +22,7 @@ class UserPlaces extends React.Component {
       const author = this.props.user.email;
       this.fetchPlacesByUser(author);
     }
+  };
   fetchPlacesByUser = author => {
     api.fetchFavPlacesByUser(author).then(data => {
       this.setState({ data: data, isLoading: false });
@@ -31,7 +33,7 @@ class UserPlaces extends React.Component {
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <Spinner/>;
+      return <Spinner />;
     }
 
     return (

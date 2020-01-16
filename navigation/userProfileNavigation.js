@@ -23,18 +23,18 @@ const userProfileNavigation = createStackNavigator(
   },
   {
     initialRouteName: "Settings",
-    
+
     defaultNavigationOptions: {
       cardOverlayEnabled: true,
       headerStyle: {
         backgroundColor: "#e6005c"
       },
       cardStyle: {
-        backgroundColor: "black",
+        backgroundColor: "black"
       },
       headerTintColor: "#fff",
       cardStyle: {
-        backgroundColor: "black"
+        backgroundColor: "white"
       },
       headerTitleStyle: {
         fontWeight: "bold"
