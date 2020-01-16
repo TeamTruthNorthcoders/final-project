@@ -4,8 +4,8 @@ import * as api from "../../utils/utils";
 import StarRating from "react-native-star-rating";
 import BeeSafeButton from "../BeeSafeButton";
 import Spinner from "../Spinner";
-
-export default class UserReviews extends Component {
+import { connect } from "react-redux";
+class UserReviews extends Component {
   state = {
     data: [],
     isLoading: true
@@ -13,12 +13,13 @@ export default class UserReviews extends Component {
 
   componentDidMount = () => {
     let author = this.props.user.email;
+    console.log(author);
     this.fetchReviewsByAuthor(author);
   };
 
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.data.length !== prevState.data.length) {
-      const author = "me";
+      const author = this.props.user.email;
       this.fetchReviewsByAuthor(author);
     }
   };
@@ -122,3 +123,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(UserReviews);

@@ -37,9 +37,7 @@ class Settings extends React.Component {
 
   _retrieveData = async () => {
     try {
-      console.log("We are in retrieve data");
       const value = await AsyncStorage.getItem("userDetails");
-      console.log("this is the value within retrievedata", value);
       if (value !== null) {
         return value;
         // We have data!!
@@ -80,6 +78,7 @@ class Settings extends React.Component {
       })
       .then(() => {
         this.resetFields();
+        this.setState({ switch: !this.state.switch });
       })
       .catch(error => {
         Alert.alert(error.message);
@@ -90,10 +89,11 @@ class Settings extends React.Component {
     user
       .updateEmail(this.state.newEmail)
       .then(() => {
-        Alert.alert("Email was succesfully changed");
+        Alert.alert("Email was successfully changed");
       })
       .then(() => {
         this.resetFields();
+        this.setState({ switch: !this.state.switch });
       })
       .catch(error => {
         Alert.alert(error.message);
@@ -103,7 +103,6 @@ class Settings extends React.Component {
   makeCall = async () => {
     try {
       const phoneNumber = await this._retrieveData();
-      console.log("this is the phone number", phoneNumber);
       const args = {
         number: phoneNumber.toString(), // String value with the number to call
         prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
@@ -118,13 +117,14 @@ class Settings extends React.Component {
   render() {
     const regex = /([A-Z, a-z])\w+/g;
     const { email } = this.props.user;
-    const obfuscatedEmail = email.replace(regex, "xxxxx");
+    // const obfuscatedEmail = email.replace(regex, "xxxxx");
+    // if you don't want the user email to be displayed, uncomment line 120 and change line 127
 
     return (
       <React.Fragment>
         <ScrollView style={ScrollView}>
           <ReactNativeSettingsPage>
-            <UserProfile email={obfuscatedEmail}></UserProfile>
+            <UserProfile email={email}></UserProfile>
             <TouchableOpacity
               style={styles.button}
               title="CALL YOUR FRIEND"
@@ -160,8 +160,8 @@ class Settings extends React.Component {
                 clearButtonMode="always"
                 style={styles.texInput}
                 placeholder="Current Password"
-                autoCorrect={false}
                 autoCapitalize="none"
+                autoCorrect={false}
                 secureTextEntry={true}
                 blurOnSubmit
                 onChangeText={text => {
@@ -182,7 +182,7 @@ class Settings extends React.Component {
                 }}
                 value={this.state.newPassword}
               ></TextInput>
-              <CheckRow
+              <SwitchRow
                 text="Change email"
                 autoCorrect={false}
                 iconName="envelope-open"
@@ -200,7 +200,7 @@ class Settings extends React.Component {
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
-                blurOnSubmit={false}
+                blurOnSubmit
                 onChangeText={text => {
                   this.setState({ newEmail: text });
                 }}
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderColor: "gray",
     color: "white",
-    paddingLeft : 5
+    paddingLeft: 5
   },
   texInput: {
     borderColor: "gray",
