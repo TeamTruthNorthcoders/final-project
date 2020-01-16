@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as api from "../../utils/utils";
 import StarRating from "react-native-star-rating";
+import BeeSafeButton from "../BeeSafeButton";
 
 export default class UserReviews extends Component {
   state = {
@@ -62,6 +63,12 @@ export default class UserReviews extends Component {
                   halfStarColor={"gold"}
                   fullStarColor={"gold"}
                 />
+                <BeeSafeButton
+                  apiCallbackFunction={() =>
+                    api.deleteReviewByReviewId(review.review_id)
+                  }
+                  title={"Delete"}
+                />
               </View>
             </View>
           );
@@ -84,7 +91,9 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   content: {
-    marginLeft: 16,
+    // alignContent: "center",
+    // width: "100%",
+    marginLeft: -40,
     flex: 1
   },
   contentHeader: {
