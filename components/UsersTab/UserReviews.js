@@ -61,8 +61,9 @@ export default class UserReviews extends Component {
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>
-                    {review.author.substring(0, 3) +
-                      Array(review.author.length + 1).join("*")}
+                    {review.place_name}
+                    {/* {review.author.substring(0, 3) +
+                      Array(review.author.length + 1).join("*")} */}
                   </Text>
                 </View>
                 <Text>{review.review}</Text>

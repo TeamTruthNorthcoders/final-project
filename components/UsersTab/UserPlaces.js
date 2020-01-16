@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: "bold"
   }
 });
