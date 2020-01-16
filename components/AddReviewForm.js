@@ -1,62 +1,63 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button, Text } from "react-native";
 import t from "tcomb-form-native";
 import * as api from "../utils/utils";
 const Form = t.form.Form;
 import { AirbnbRating } from "react-native-ratings";
 
 const Review = t.struct({
-  review: t.String,
-  place_rating: t.String
+  review: t.String
 });
 
 export default class AddReviewForm extends Component {
   state = {
     newReview: {},
-    rating: 0
+    rating: 0,
+    review: ""
   };
 
-  handleSubmit = () => {
-    const value = this._form.getValue();
-    // const place_id = this.props.navigation.state.params.id;
-    // const author = this.props.navigation.state.params.author;
-    const review = value.review;
+  handleSubmit = (place_id, author, place_name) => {
+    const review = this.state.review.review;
     const rating = this.state.rating;
-    console.log("value: ", value);
-    // console.log("author", author);
-    // console.log(("place_id": place_id));
     api
-      .postReviewByPlaceId(
-        // place_id, author,
-        review,
-        rating
-      )
+      .postReviewByPlaceId(place_name, place_id, author, review, rating)
       .then(data => {
-        this.setState({ newReview: data.item });
+        this.setState({ newReview: data.item, review: "", rating: 0 });
       });
   };
-  //(place_id, author, review, rating)
 
   ratingCompleted = rating => {
     this.setState({ rating: rating });
   };
 
+  inputHandler = () => {
+    const value = this._form.getValue();
+    this.setState({ review: value });
+  };
+
   render() {
+    const { id, author, place_name } = this.props;
     return (
       <View>
         <View style={styles.container}>
           <Form
-            ref={c => (this._form = c)} // assign a ref
+            onChange={this.inputHandler}
+            ref={c => (this._form = c)}
             type={Review}
+            value={this.state.review}
           />
           <AirbnbRating
+            style={styles.button}
             count={5}
             reviews={[]}
-            defaultRating={3}
+            defaultRating={0}
             size={45}
             onFinishRating={this.ratingCompleted}
           />
-          <Button title="Post Review!" onPress={this.handleSubmit} />
+          <Button
+            title="Post Review!"
+            onPress={() => this.handleSubmit(id, author, place_name)}
+          />
         </View>
       </View>
     );
