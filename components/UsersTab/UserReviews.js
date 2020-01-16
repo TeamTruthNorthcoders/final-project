@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
   },
   content: {
     alignContent: "center",
-    // width: "100%",
     flex: 1
   },
   contentHeader: {
