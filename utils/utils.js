@@ -46,10 +46,10 @@ export const fetchReviewsByPlaceId = async place_id => {
     });
 };
 
-export const postSafePlace = async place_id => {
+export const postSafePlace = async (place_id, author) => {
   return await axios
     .post(`${baseURL}/safeplaces/${place_id}`, {
-      author: "testy@mctest.face"
+      author: author
     })
     .then(({ data }) => {
       return data;

@@ -13,13 +13,12 @@ class UserPlaces extends React.Component {
   };
 
   componentDidMount() {
-    // let author = this.props.user.email;
-    const author = "me";
+    const author = this.props.user.email;
     this.fetchPlacesByUser(author);
   }
 
   componentDidUpdate = () => {
-    const author = "me";
+    const author = this.props.user.email;
     this.fetchPlacesByUser(author);
   };
 
