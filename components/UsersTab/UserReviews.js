@@ -13,7 +13,6 @@ class UserReviews extends Component {
 
   componentDidMount = () => {
     let author = this.props.user.email;
-    console.log(author);
     this.fetchReviewsByAuthor(author);
   };
 
@@ -31,6 +30,7 @@ class UserReviews extends Component {
   };
 
   render() {
+    console.log(this.state.data);
     const { isLoading } = this.state;
 
     if (isLoading) {
@@ -54,12 +54,12 @@ class UserReviews extends Component {
             <View style={styles.container}>
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
-                  <Text style={styles.name}>
-                    {review.author.substring(0, 3) +
-                      Array(review.author.length + 1).join("*")}
+                  <Text style={styles.name}>{review.place_name}</Text>
+                  <Text style={styles.time}>
+                    {review.date_time.substring(0, 11)}
                   </Text>
                 </View>
-                <Text>{review.review}</Text>
+                <Text style={styles.review}>{review.review}</Text>
                 <StarRating
                   disabled={false}
                   maxStars={5}
@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
   },
   content: {
     alignContent: "center",
-    // width: "100%",
     flex: 1
   },
   contentHeader: {
@@ -115,12 +114,18 @@ const styles = StyleSheet.create({
     height: 35
   },
   time: {
-    fontSize: 11,
+    fontSize: 12,
     color: "#808080"
   },
   name: {
-    fontSize: 15,
+    fontSize: 22,
     fontWeight: "bold"
+  },
+  review: {
+    fontSize: 20,
+    textAlign: "left",
+    paddingTop: 5,
+    paddingBottom: 15
   }
 });
 
