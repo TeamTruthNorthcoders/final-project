@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  FlatList
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import * as api from "../../utils/utils";
 import StarRating from "react-native-star-rating";
 import BeeSafeButton from "../BeeSafeButton";

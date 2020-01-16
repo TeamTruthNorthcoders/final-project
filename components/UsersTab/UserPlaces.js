@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import StarRating from "react-native-star-rating";
 import Spinner from "../Spinner";
 import * as api from "../../utils/utils";
-import { connect } from "react-redux";
 import BeeSafeButton from "../BeeSafeButton";
 
 class UserPlaces extends React.Component {
