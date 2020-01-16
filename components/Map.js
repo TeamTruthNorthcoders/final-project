@@ -245,7 +245,9 @@ class Map extends React.Component {
                 api
                   .postSafePlace(newItem.id, this.props.user.email)
                   .then(() => {
-                    Alert.alert("Thanks, this new place has been added !");
+                    Alert.alert(
+                      "Thanks, this new place has been added and will show when it is open!"
+                    );
 
                     this.setState({ addAPlace: false, newPlace: newItem });
                   }).catch;
@@ -300,7 +302,7 @@ class Map extends React.Component {
                 draggable
               >
                 <View>
-                  <Icon name={"md-pin"} size={50} color={"#0039e6"} />
+                  <Icon name={"md-pin"} size={70} color={"#0039e6"} />
                 </View>
               </Marker>
             ) : (
@@ -324,7 +326,7 @@ class Map extends React.Component {
       );
     }
     return (
-      //In case we don't have permission to access their location we don't return the mapbut this message
+      //In case we don't have permission to access their location we don't return the map but this message
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>We need your permission!</Text>
       </View>
