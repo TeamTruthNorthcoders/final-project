@@ -54,6 +54,9 @@ class UserPlaces extends React.Component {
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>{place.place_name}</Text>
+                  <Text style={styles.time}>
+                    {place.date_time.substring(0, 11)}
+                  </Text>
                 </View>
                 <Text>{place.review}</Text>
                 <StarRating
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   content: {
-    marginLeft: 16,
+    alignContent: "center",
     flex: 1
   },
   contentHeader: {
@@ -109,12 +112,13 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35
   },
-
   name: {
-    fontSize: 15,
+    fontSize: 22,
+    textAlign: "left",
     fontWeight: "bold"
   }
 });
+
 const mapStateToProps = state => {
   return {
     user: state.user
