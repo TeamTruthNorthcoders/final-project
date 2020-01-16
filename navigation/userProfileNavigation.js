@@ -33,6 +33,9 @@ const userProfileNavigation = createStackNavigator(
         backgroundColor: "black",
       },
       headerTintColor: "#fff",
+      cardStyle: {
+        backgroundColor: "black"
+      },
       headerTitleStyle: {
         fontWeight: "bold"
       }

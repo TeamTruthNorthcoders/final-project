@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#DAFA00",
+    backgroundColor: "#EDC2D8FF",
     borderRadius: 50
   },
   headerContent: {
