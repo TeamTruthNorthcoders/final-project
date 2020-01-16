@@ -1,13 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import ReactNativeSettingsPage, {
-  SectionRow,
-  NavigateRow,
-  CheckRow,
-  SliderRow,
-  SwitchRow
-} from "react-native-settings-page";
+import ReactNativeSettingsPage, from "react-native-settings-page";
 import { AsyncStorage } from "react-native";
 
 export default class EmergencyContact extends React.Component {
@@ -21,10 +15,14 @@ export default class EmergencyContact extends React.Component {
     }
   };
 
+  handleSave = () => {
+    this._storeData();
+    Alert.alert("Thanks, your emergency contact has been saved !", "");
+  };
+
   render() {
     return (
       <React.Fragment>
-
         <ReactNativeSettingsPage>
           <Text style={styles.emergencyContact}>
             Enter your emergency contact below.
@@ -43,7 +41,7 @@ export default class EmergencyContact extends React.Component {
             }}
             value={this.state.newEmergencyContact}
           ></TextInput>
-          <TouchableOpacity style={styles.save} onPress={this._storeData}>
+          <TouchableOpacity style={styles.save} onPress={this.handleSave}>
             <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
               Save
             </Text>
@@ -55,7 +53,9 @@ export default class EmergencyContact extends React.Component {
                 "https://vignette.wikia.nocookie.net/p__/images/4/42/001799945127.jpg/revision/latest?cb=20120115125731&path-prefix=protagonist"
             }}
           />
-          <Text style={{color: 'gray', paddingLeft : 5, marginBottom: 0}}>Please contact the police first in case of real threat.</Text>
+          <Text style={{ color: "gray", paddingLeft: 5, marginBottom: 0 }}>
+            Please contact the police first in case of real threat.
+          </Text>
         </ReactNativeSettingsPage>
       </React.Fragment>
     );
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     height: 270,
     borderRadius: 63,
     borderColor: "white",
-    marginBottom: 25,
+    marginBottom: 25
     // resizeMode: "contain"
   },
   emergencyContact: {
