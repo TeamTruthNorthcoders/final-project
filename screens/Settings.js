@@ -3,10 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   ScrollView,
   TouchableOpacity
 } from "react-native";
+import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
+let Icon = Ionicons;
+let IconPlus = AntDesign;
 import { connect } from "react-redux";
 import Firebase from "../config/Firebase";
 import ReactNativeSettingsPage, {
@@ -124,10 +126,15 @@ class Settings extends React.Component {
           <ReactNativeSettingsPage>
             <UserProfile email={obfuscatedEmail}></UserProfile>
             <TouchableOpacity
-              style={styles.emergencyButton}
+              style={styles.button}
+              title="CALL YOUR FRIEND"
               onPress={() => this.makeCall()}
+              centerContent={true}
             >
-              <Text>This is AN EMERGENCY</Text>
+              <Icon name={"md-warning"} size={30} color={"white"} />
+              <Text style={styles.emergencyButtonTextInput}>
+                PRESS TO CALL YOUR FRIEND!
+              </Text>
             </TouchableOpacity>
             <SectionRow text="Select Your Options">
               <NavigateRow
@@ -136,7 +143,7 @@ class Settings extends React.Component {
                 onPressCallback={this.handleSignout}
               />
               <NavigateRow
-                text="Change Emergency Contact"
+                text="Change Designated Friend Contact"
                 iconName="phone"
                 onPressCallback={this.navigateToEmergencyContPage}
               />
@@ -225,19 +232,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 30
   },
+  emergencyButtonTextInput: {
+    textAlign: "center",
+    borderColor: "gray",
+    color: "white"
+  },
   texInput: {
     borderColor: "gray",
-    borderWidth: 1,
+    borderWidth: 2,
     margin: 15,
     height: 40
   },
-  emergencyButton: {
-    borderColor: "red",
-    borderWidth: 4,
-    height: 40
-  },
+
   ScrollView: {
     flexDirection: "row"
+  },
+
+  button: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#3C1053FF",
+    borderColor: "black",
+    borderWidth: 2,
+    borderRadius: 15,
+    margin: 10,
+    justifyContent: "center",
+    padding: 7
   }
 });
 
