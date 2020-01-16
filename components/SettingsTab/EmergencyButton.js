@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import ReactNativeSettingsPage, from "react-native-settings-page";
+import ReactNativeSettingsPage from "react-native-settings-page";
 import { AsyncStorage } from "react-native";
 
 export default class EmergencyContact extends React.Component {
