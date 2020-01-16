@@ -25,9 +25,11 @@ export default class UserReviews extends Component {
     this.fetchReviewsByAuthor(author);
   };
 
-  componentDidUpdate = () => {
-    let author = "me";
-    this.fetchReviewsByAuthor(author);
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.data.length !== prevState.data.length) {
+      const author = "me";
+      this.fetchReviewsByAuthor(author);
+    }
   };
 
   fetchReviewsByAuthor = author => {
@@ -60,10 +62,12 @@ export default class UserReviews extends Component {
             <View style={styles.container}>
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
-                  <Text style={styles.name}>{review.place_name}</Text>
-                  <Text style={styles.time}>{review.date_time.substring(0, 11)}</Text>
+                  <Text style={styles.name}>
+                    {review.author.substring(0, 3) +
+                      Array(review.author.length + 1).join("*")}
+                  </Text>
                 </View>
-                <Text style={styles.review}>{review.review}</Text>
+                <Text>{review.review}</Text>
                 <StarRating
                   disabled={false}
                   maxStars={5}
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
   },
   content: {
     alignContent: "center",
+    // width: "100%",
     flex: 1
   },
   contentHeader: {
@@ -118,18 +123,11 @@ const styles = StyleSheet.create({
     height: 35
   },
   time: {
-    fontSize: 12,
+    fontSize: 11,
     color: "#808080"
   },
   name: {
-    fontSize: 22,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  review: {
-    fontSize: 20,
-    textAlign: "left",
-    paddingTop: 5,
-    paddingBottom: 15
+    fontSize: 15,
+    fontWeight: "bold"
   }
 });

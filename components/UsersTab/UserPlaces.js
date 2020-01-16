@@ -17,11 +17,11 @@ class UserPlaces extends React.Component {
     this.fetchPlacesByUser(author);
   }
 
-  componentDidUpdate = () => {
-    const author = this.props.user.email;
-    this.fetchPlacesByUser(author);
-  };
-
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.state.data.length !== prevState.data.length) {
+      const author = this.props.user.email;
+      this.fetchPlacesByUser(author);
+    }
   fetchPlacesByUser = author => {
     api.fetchFavPlacesByUser(author).then(data => {
       this.setState({ data: data, isLoading: false });
@@ -54,9 +54,6 @@ class UserPlaces extends React.Component {
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.name}>{place.place_name}</Text>
-                  <Text style={styles.time}>
-                    {place.date_time.substring(0, 11)}
-                  </Text>
                 </View>
                 <Text>{place.review}</Text>
                 <StarRating
@@ -94,7 +91,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   content: {
-    alignContent: "center",
+    marginLeft: 16,
     flex: 1
   },
   contentHeader: {
@@ -112,13 +109,12 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35
   },
+
   name: {
-    fontSize: 22,
-    textAlign: "left",
+    fontSize: 15,
     fontWeight: "bold"
   }
 });
-
 const mapStateToProps = state => {
   return {
     user: state.user
