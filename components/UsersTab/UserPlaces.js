@@ -32,7 +32,7 @@ class UserPlaces extends React.Component {
     const { isLoading } = this.state;
 
     if (isLoading) {
-      return <Spinner></Spinner>;
+      return <Spinner/>;
     }
 
     return (

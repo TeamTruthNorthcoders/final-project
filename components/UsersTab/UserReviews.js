@@ -20,8 +20,7 @@ export default class UserReviews extends Component {
   };
 
   componentDidMount = () => {
-    // let author = this.props.navigation.state.params.email.email;
-    let author = "me";
+    let author = this.props.user.email;
     this.fetchReviewsByAuthor(author);
   };
 
