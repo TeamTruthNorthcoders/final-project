@@ -133,7 +133,7 @@ class Settings extends React.Component {
             >
               <Icon name={"md-warning"} size={30} color={"white"} />
               <Text style={styles.emergencyButtonTextInput}>
-                PRESS TO CALL YOUR FRIEND!
+                PRESS TO CALL YOUR BUDDY!
               </Text>
             </TouchableOpacity>
             <SectionRow text="Select Your Options">
@@ -143,7 +143,7 @@ class Settings extends React.Component {
                 onPressCallback={this.handleSignout}
               />
               <NavigateRow
-                text="Change Designated Friend Contact"
+                text="Add A Buddy"
                 iconName="phone"
                 onPressCallback={this.navigateToEmergencyContPage}
               />
@@ -235,7 +235,8 @@ const styles = StyleSheet.create({
   emergencyButtonTextInput: {
     textAlign: "center",
     borderColor: "gray",
-    color: "white"
+    color: "white",
+    paddingLeft : 5
   },
   texInput: {
     borderColor: "gray",
