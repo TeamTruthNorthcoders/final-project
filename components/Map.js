@@ -4,13 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator,
-  Image,
   TouchableOpacity,
-  Alert,
-  Button
+  Alert
 } from "react-native";
-
+import { connect } from "react-redux";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 let Icon = Ionicons;
 let IconPlus = AntDesign;
@@ -35,7 +32,7 @@ const { width } = Dimensions.get("screen");
 
 import * as api from "../utils/utils";
 
-export default class Map extends React.Component {
+class Map extends React.Component {
   state = {
     latitude: null,
     longitude: null,
@@ -245,11 +242,13 @@ export default class Map extends React.Component {
             {
               text: "Yes",
               onPress: () => {
-                api.postSafePlace(newItem.id).then(() => {
-                  Alert.alert("Thanks, this new place has been added !");
+                api
+                  .postSafePlace(newItem.id, this.props.user.email)
+                  .then(() => {
+                    Alert.alert("Thanks, this new place has been added !");
 
-                  this.setState({ addAPlace: false, newPlace: newItem });
-                }).catch;
+                    this.setState({ addAPlace: false, newPlace: newItem });
+                  }).catch;
               }
             }
           ],
@@ -356,3 +355,11 @@ const styles = StyleSheet.create({
     marginTop: 5
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(Map);

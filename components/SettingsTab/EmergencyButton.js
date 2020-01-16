@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Image } from "react-native";
+import { StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import ReactNativeSettingsPage, {
   SectionRow,
@@ -15,7 +15,6 @@ export default class EmergencyContact extends React.Component {
 
   _storeData = async () => {
     try {
-      // console.log(this.state.newEmergencyContact);
       await AsyncStorage.setItem("userDetails", this.state.newEmergencyContact);
     } catch (e) {
       console.log(e);
@@ -23,19 +22,18 @@ export default class EmergencyContact extends React.Component {
   };
 
   render() {
-    // console.log(this.state);
     return (
       <React.Fragment>
-        <Text style={styles.emergencyContact}>
-          Please put here a number for a person you trust whom you can contact
-          real fast! Always contact the Police first if you think are in serious
-          danger.
-        </Text>
+
         <ReactNativeSettingsPage>
+          <Text style={styles.emergencyContact}>
+            Enter your emergency contact below.
+          </Text>
+
           <TextInput
             clearButtonMode="always"
             style={styles.texInput}
-            placeholder="New Emergency Contact"
+            placeholder="Enter phone number"
             autoCorrect={false}
             autoCapitalize="none"
             secureTextEntry={false}
@@ -45,18 +43,20 @@ export default class EmergencyContact extends React.Component {
             }}
             value={this.state.newEmergencyContact}
           ></TextInput>
-          <NavigateRow
-            text="Submit"
-            iconName="music"
-            onPressCallback={this._storeData}
+          <TouchableOpacity style={styles.save} onPress={this._storeData}>
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
+              Save
+            </Text>
+          </TouchableOpacity>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri:
+                "https://vignette.wikia.nocookie.net/p__/images/4/42/001799945127.jpg/revision/latest?cb=20120115125731&path-prefix=protagonist"
+            }}
           />
+          <Text style={{color: 'gray', paddingLeft : 5, marginBottom: 0}}>Please contact the police first in case of real threat.</Text>
         </ReactNativeSettingsPage>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri: "https://i.imgur.com/TDsnkJj.png"
-          }}
-        />
       </React.Fragment>
     );
   }
@@ -72,25 +72,37 @@ const styles = StyleSheet.create({
   texInput: {
     flex: 1,
     alignItems: "center",
-    borderColor: "gray",
+    borderColor: "#e6005c",
     borderWidth: 1,
     margin: 15,
-    height: 60
+    height: 60,
+    padding: 5,
+    borderWidth: 3
   },
   avatar: {
     flex: 1,
     alignSelf: "center",
-    paddingLeft: 100,
-    width: 230,
-    height: 230,
+    width: 170,
+    height: 270,
     borderRadius: 63,
-    borderWidth: 4,
     borderColor: "white",
-    marginBottom: 25
+    marginBottom: 25,
+    // resizeMode: "contain"
   },
   emergencyContact: {
-    fontSize: 22,
-    color: "#778899",
-    fontWeight: "600"
+    width: "80%",
+    alignSelf: "flex-start",
+    fontSize: 15,
+    color: "black",
+    fontWeight: "600",
+    marginTop: 25,
+    marginLeft: 15
+  },
+  save: {
+    alignSelf: "center",
+    padding: 15,
+    borderRadius: 20,
+    backgroundColor: "#e6005c",
+    marginBottom: 45
   }
 });
