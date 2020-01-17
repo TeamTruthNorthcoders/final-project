@@ -30,7 +30,6 @@ class UserReviews extends Component {
   };
 
   render() {
-    console.log(this.state.data);
     const { isLoading } = this.state;
 
     if (isLoading) {

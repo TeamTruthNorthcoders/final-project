@@ -16,7 +16,7 @@ export default function BeeSafeButton(props) {
 
 function deleteHandler(apiCallbackFunction) {
   apiCallbackFunction().then(data => {
-    console.log(data);
+    return data
   });
 }
 
