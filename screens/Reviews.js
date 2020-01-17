@@ -5,60 +5,59 @@ import StarRating from "react-native-star-rating";
 import * as api from "../utils/utils";
 import Spinner from "react-native-loading-spinner-overlay";
 import AddReviewForm from "../components/AddReviewForm";
+import { connect } from "react-redux";
 
-export default class Reviews extends React.Component {
+class Reviews extends React.Component {
   state = {
     place: {},
     reviews: [],
     isLoading: true,
     rating: 0,
-    newPlace :{}
+    newPlace: {}
   };
 
-  async componentDidMount (){
+  async componentDidMount() {
     const place_id = this.props.navigation.state.params.id;
     this.getReviewsByPlaceId(place_id);
     YellowBox.ignoreWarnings(["VirtualizedLists should never be nested"]);
-  };
+  }
 
-  async componentDidUpdate (prevProps,prevState){
+  async componentDidUpdate(prevProps, prevState) {
     const place_id = this.props.navigation.state.params.id;
     if (prevState.place.rating !== this.state.place.rating) {
       this.getReviewsByPlaceId(place_id);
     }
-  };
-
-   updateRating = async(updatedPlace) =>{
-    const averageRating = updatedPlace.rating / updatedPlace.rating_count
-    //  api.fetchReviewsByPlaceId(this.state.place.place_id).then((data) => {
-      this.setState({newPlace: updatedPlace,rating:averageRating})
-    // })
   }
 
+  updateRating = async updatedPlace => {
+    const averageRating = updatedPlace.rating / updatedPlace.rating_count;
+    this.setState({ newPlace: updatedPlace, rating: averageRating });
+  };
+
   getReviewsByPlaceId = place_id => {
-    api.fetchReviewsByPlaceId(place_id)
-    .then(data =>{
+    api.fetchReviewsByPlaceId(place_id).then(data => {
       this.setState({
         reviews: data.Items || [],
-         place: this.props.navigation.state.params,
+        place: this.props.navigation.state.params,
         isLoading: false
       });
     });
   };
 
-addReviews = (newReview) => {
-this.setState(prevState => {return { reviews: [newReview, ...prevState.reviews]}})
-}
+  addReviews = newReview => {
+    this.setState(prevState => {
+      return { reviews: [newReview, ...prevState.reviews] };
+    });
+  };
 
   render() {
-    const regExEmail = /[^@]*/
-
+    let regExEmail = /[^@]*/;
+    const author = this.props.user.email;
     const { address, name, weekday_text } = this.state.place;
     let rating;
-    if (this.state.newPlace.rating !== undefined){
+    if (this.state.newPlace.rating !== undefined) {
       rating = this.state.newPlace.rating / this.state.newPlace.rating_count;
-    }else
-      rating = this.state.place.rating / this.state.place.rating_count;
+    } else rating = this.state.place.rating / this.state.place.rating_count;
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -101,8 +100,9 @@ this.setState(prevState => {return { reviews: [newReview, ...prevState.reviews]}
           <View>
             <AddReviewForm
               id={this.state.place.id}
-              author={this.state.place.author}
-              place_name={name} updateRating={this.updateRating}
+              author={author}
+              place_name={name}
+              updateRating={this.updateRating}
               addReviews={this.addReviews}
             />
           </View>
@@ -122,9 +122,7 @@ this.setState(prevState => {return { reviews: [newReview, ...prevState.reviews]}
                 <View style={styles.container}>
                   <View style={styles.header}>
                     <Text style={styles.author}>
-                      {(review.author).match(regExEmail).join('')}
-                      {/* {review.author.substring(0, 5) +
-                        Array(review.author.length + 1).join("*")} */}
+                      {review.author.match(regExEmail).join("")}
                     </Text>
                     <Text style={styles.date}>
                       posted on {review.date_time.substring(0, 11)}
@@ -193,3 +191,11 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps)(Reviews);

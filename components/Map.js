@@ -164,7 +164,6 @@ class Map extends React.Component {
 
   //renders markers on the map.
   renderMarkers = () => {
-    // console.log(this.state, "THIS STATE CONSOLE LOG");
     const { locations } = this.state;
     const { point } = this.state;
     return (
