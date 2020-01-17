@@ -8,37 +8,57 @@ import AddReviewForm from "../components/AddReviewForm";
 
 export default class Reviews extends React.Component {
   state = {
-    place: [],
+    place: {},
     reviews: [],
-    isLoading: true
+    isLoading: true,
+    rating: 0,
+    newPlace :{}
   };
 
-  componentDidMount = () => {
+  async componentDidMount (){
     const place_id = this.props.navigation.state.params.id;
     this.getReviewsByPlaceId(place_id);
-
     YellowBox.ignoreWarnings(["VirtualizedLists should never be nested"]);
   };
 
-  componentDidUpdate = () => {
+  async componentDidUpdate (prevProps,prevState){
     const place_id = this.props.navigation.state.params.id;
-    this.getReviewsByPlaceId(place_id);
+    if (prevState.place.rating !== this.state.place.rating) {
+      this.getReviewsByPlaceId(place_id);
+    }
   };
 
+   updateRating = async(updatedPlace) =>{
+    const averageRating = updatedPlace.rating / updatedPlace.rating_count
+    //  api.fetchReviewsByPlaceId(this.state.place.place_id).then((data) => {
+      this.setState({newPlace: updatedPlace,rating:averageRating})
+    // })
+  }
+
   getReviewsByPlaceId = place_id => {
-    api.fetchReviewsByPlaceId(place_id).then(data => {
+    api.fetchReviewsByPlaceId(place_id)
+    .then(data =>{
       this.setState({
-        reviews: data.Items,
-        place: this.props.navigation.state.params,
+        reviews: data.Items || [],
+         place: this.props.navigation.state.params,
         isLoading: false
       });
     });
   };
 
-  render() {
-    const { address, name, weekday_text } = this.state.place;
-    const rating = this.state.place.rating / this.state.place.rating_count;
+addReviews = (newReview) => {
+this.setState(prevState => {return { reviews: [newReview, ...prevState.reviews]}})
+}
 
+  render() {
+    const regExEmail = /[^@]*/
+
+    const { address, name, weekday_text } = this.state.place;
+    let rating;
+    if (this.state.newPlace.rating !== undefined){
+      rating = this.state.newPlace.rating / this.state.newPlace.rating_count;
+    }else
+      rating = this.state.place.rating / this.state.place.rating_count;
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
@@ -82,7 +102,8 @@ export default class Reviews extends React.Component {
             <AddReviewForm
               id={this.state.place.id}
               author={this.state.place.author}
-              place_name={name}
+              place_name={name} updateRating={this.updateRating}
+              addReviews={this.addReviews}
             />
           </View>
           <FlatList
@@ -101,8 +122,8 @@ export default class Reviews extends React.Component {
                 <View style={styles.container}>
                   <View style={styles.header}>
                     <Text style={styles.author}>
-                      {review.author}
-                      {/* {review.author.substring(0, 3) +
+                      {(review.author).match(regExEmail).join('')}
+                      {/* {review.author.substring(0, 5) +
                         Array(review.author.length + 1).join("*")} */}
                     </Text>
                     <Text style={styles.date}>
@@ -119,7 +140,6 @@ export default class Reviews extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     paddingRight: 10,
