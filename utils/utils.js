@@ -75,6 +75,13 @@ export const postReviewByPlaceId = async (
       return data;
     });
 };
+export const patchSafeplaceById = async (place_id,rating_value) =>{
+  return await axios
+  .patch(`${baseURL}/safeplaces/${place_id}`,{"rating_value":rating_value})
+  .then(({data}) =>{
+      return data
+    })
+}
 
 export const deleteReviewByReviewId = async review_id => {
   return await axios

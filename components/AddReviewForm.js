@@ -11,7 +11,6 @@ const Review = t.struct({
 
 export default class AddReviewForm extends Component {
   state = {
-    newReview: {},
     rating: 0,
     review: ""
   };
@@ -20,10 +19,18 @@ export default class AddReviewForm extends Component {
     const review = this.state.review.review;
     const rating = this.state.rating;
     api
-      .postReviewByPlaceId(place_name, place_id, author, review, rating)
-      .then(data => {
-        this.setState({ newReview: data.item, review: "", rating: 0 });
-      });
+    .postReviewByPlaceId(place_name, place_id, author, review, rating)
+    .then(data => {
+      this.props.addReviews(data)
+      return api
+      .patchSafeplaceById(place_id,rating)
+    })
+    .then(data =>{
+      this.props.updateRating(data)
+      this.setState( {review: "", rating: 0 });
+    })
+    .catch(console.log)
+
   };
 
   ratingCompleted = rating => {
@@ -50,7 +57,7 @@ export default class AddReviewForm extends Component {
             style={styles.button}
             count={5}
             reviews={[]}
-            defaultRating={0}
+            defaultRating={this.state.rating}
             size={45}
             onFinishRating={this.ratingCompleted}
           />
