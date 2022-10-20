@@ -26,7 +26,7 @@
     "react-native-maps": "0.26.1",
     "react-native-phone-call": "^1.0.9",
     "react-native-ratings": "^6.5.0",
-    "react-native-reanimated": "^1.4.0",
+    "react-native-reanimated": "^2.10.0",
     "react-native-safe-area-context": "^0.6.2",
     "react-native-screens": "^2.0.0-alpha.22",
     "react-native-settings-page": "^2.0.6",
